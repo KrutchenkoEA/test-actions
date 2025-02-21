@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve --port=5000",
     "build": "ng build",
+    "build:github": "ng build --output-path docs --base-href /test-actions/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
