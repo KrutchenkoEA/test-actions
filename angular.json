@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "clear-angular": {
+    "test-actions": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "ngx-build-plus:browser",
           "options": {
-            "outputPath": "dist",
+            "outputPath": "dist/test-actions",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -29,7 +29,8 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "commonChunk": false
           },
           "configurations": {
             "production": {
@@ -59,10 +60,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "clear-angular:build:production"
+              "buildTarget": "test-actions:build:production"
             },
             "development": {
-              "buildTarget": "clear-angular:build:development"
+              "buildTarget": "test-actions:build:development"
             }
           },
           "defaultConfiguration": "development"
