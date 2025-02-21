@@ -1,0 +1,49 @@
+<div>
+  {{ data?.initial }}
+</div>
+<table>
+  <thead>
+  <tr>
+    <th>var</th>
+    <th>form</th>
+    <th>res</th>
+  </tr>
+  </thead>
+  <tbody>
+    @for (item of data?.parsed; track item) {
+      <tr>
+        <td>{{ item.variable }}</td>
+        <td>{{ item.formula }}</td>
+        <td>{{ item.result }}</td>
+      </tr>
+    }
+  </tbody>
+</table>
+<hr>
+
+
+@for (row of dataArr; track row) {
+  <div>
+    {{ row.initial }}
+  </div>
+  <table>
+    <thead>
+    <tr>
+      <th>var</th>
+      <th>form</th>
+      <th>res</th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (item of row.parsed; track item) {
+        <tr>
+          <td>{{ item.variable }}</td>
+          <td>{{ item.formula }}</td>
+          <td>{{ item.result }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+  <hr>
+}
+
