@@ -35,7 +35,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3.0.1
         with:
-          path: 'dist/clear-angular/browser'
+          path: 'dist'
   deploy:
     environment:
       name: github-pages
