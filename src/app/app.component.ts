@@ -13,6 +13,7 @@ export class AppComponent implements OnInit {
   title = 'clear-angular';
   public data: IParseArrResult | null = null;
   public dataArr: IParseArrResult[] = [];
+  public dataaaa = '';
 
   constructor(private parseServe: CalculationsFormulaParseService) {
   }
