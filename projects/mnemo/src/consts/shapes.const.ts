@@ -1,0 +1,20 @@
+export const DEFAULT_SHAPE_PROPERTIES = {
+  x: 10,
+  y: 10,
+  width: 120,
+  height: 120,
+};
+
+export const DEFAULT_OM_SHAPE_PROPERTIES = {
+  x: DEFAULT_SHAPE_PROPERTIES.x,
+  y: DEFAULT_SHAPE_PROPERTIES.y,
+  width: DEFAULT_SHAPE_PROPERTIES.width * 1.5,
+  height: DEFAULT_SHAPE_PROPERTIES.height,
+};
+
+export const DEFAULT_ACTIVE_ELEMENTS_SHAPE_PROPERTIES = {
+  x: DEFAULT_SHAPE_PROPERTIES.x,
+  y: DEFAULT_SHAPE_PROPERTIES.y,
+  width: DEFAULT_SHAPE_PROPERTIES.width * 5,
+  height: DEFAULT_SHAPE_PROPERTIES.height * 3,
+};

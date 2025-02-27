@@ -1,0 +1,124 @@
+@import './shared-mixin';
+@import './scroll-mixin';
+
+@mixin chart-page-list() {
+  .predictors-list {
+    &_ltr {
+      @include vertical-scroll($direction: ltr);
+    }
+
+    &_rtl {
+      @include vertical-scroll($direction: rtl);
+    }
+
+    flex: 1;
+    padding: 4px 4px 4px 8px;
+
+    .predictor {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      height: 52px;
+      padding: 0 8px;
+      border-radius: 2px;
+      border: 1px solid $border;
+      background-color: var(--color-color-3);
+      font-weight: 400;
+      font-size: 13px;
+      color: $font-color;
+      cursor: pointer;
+
+      &_active,
+      &:hover {
+        background-color: var(--color-special-color-white-background);
+      }
+
+      &_disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+
+      &__title {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 8px;
+        width: 80%;
+
+        span {
+          overflow: hidden;
+        }
+
+        .marker {
+          width: 2px;
+          height: 48px;
+          background-color: transparent;
+        }
+      }
+
+      &__setting {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      &__button {
+        background-color: transparent;
+        position: relative;
+
+        &_changed {
+          position: absolute;
+          right: 0;
+          top: 0;
+
+          svg {
+            width: 12px;
+            height: 12px;
+          }
+        }
+      }
+
+      &__info {
+        padding: 0 2px;
+        cursor: help;
+        pointer-events: all;
+
+        &_warning {
+          color: var(--color-index-deviation);
+        }
+
+        &_error {
+          color: var(--color-index-critical);
+        }
+
+        &_good {
+          color: var(--color-index-green);
+        }
+
+        &_blink {
+          animation-name: blinker;
+          animation-iteration-count: infinite;
+          animation-timing-function: linear;
+          animation-duration: 3s;
+        }
+
+        @keyframes blinker {
+          from {
+            opacity: 1;
+          }
+
+          to {
+            opacity: 0.5;
+          }
+        }
+      }
+    }
+
+    .line-loader {
+      @include line-loader($opacity: 0.7, $size: 200px);
+    }
+  }
+}

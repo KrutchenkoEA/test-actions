@@ -1,0 +1,30 @@
+<svg width="150" height="150" viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_2122_162300)">
+<path d="M0 144.952L3.003 150H21.7718L24.9249 144.952V130.048H124.925V144.952L128.078 150H146.847L150 144.952V89.9038L143.694 50H150L146.847 34.8558L129.58 29.8077L112.462 0H37.3874L20.2703 29.8077L3.003 34.8558L0 50H6.15616L0 89.9038V144.952Z" fill="#00FFFF" stroke="black" stroke-width="0.379967"/>
+<path d="M6.15625 49.997L15.6157 44.9489H50.0001L51.5016 42.3047H98.3484L100 44.9489H134.384L143.694 49.997" stroke="black" stroke-width="0.379967"/>
+<path d="M150 94.9531H0L9.30931 125.001H140.541L150 94.9531Z" stroke="black" stroke-width="0.379967"/>
+<path d="M150 89.9062H0" stroke="black" stroke-width="0.379967"/>
+<path d="M15.6152 44.9489L20.2699 29.8047" stroke="black" stroke-width="0.379967"/>
+<path d="M134.385 44.9489L129.58 29.8047" stroke="black" stroke-width="0.379967"/>
+<path d="M50 44.9531L53.003 59.857" stroke="black" stroke-width="0.379967"/>
+<path d="M96.8477 59.857L100.001 44.9531" stroke="black" stroke-width="0.379967"/>
+<path d="M21.7723 94.9531L18.6191 97.357L21.7723 114.905H128.079L131.232 97.357L128.079 94.9531" stroke="black" stroke-width="0.379967"/>
+<path d="M64.7144 109.859V97.3594H21.7715L24.9246 109.859H64.7144Z" stroke="black" stroke-width="0.379967"/>
+<path d="M85.1348 109.859V97.3594H128.078L124.925 109.859H85.1348Z" stroke="black" stroke-width="0.379967"/>
+<path d="M65.6152 113.704V96.1562H84.384V113.704H65.6152Z" stroke="black" stroke-width="0.379967"/>
+<path d="M21.7722 114.906L12.4629 119.954H137.388L128.079 114.906" stroke="black" stroke-width="0.379967"/>
+<path d="M6.15625 50L7.65775 59.8558L17.1172 89.9038" stroke="black" stroke-width="0.379967"/>
+<path d="M143.693 50L142.042 59.8558L132.732 89.9038" stroke="black" stroke-width="0.379967"/>
+<path d="M37.3881 80.0493V69.9531H18.7695L20.271 80.0493H37.3881Z" stroke="black" stroke-width="0.379967"/>
+<path d="M112.463 80.0493V69.9531H131.232L129.58 80.0493H112.463Z" stroke="black" stroke-width="0.379967"/>
+<path d="M37.387 108.651V98.5547H24.1738L26.4261 108.651H37.387Z" stroke="black" stroke-width="0.379967"/>
+<path d="M112.463 108.651V98.5547H125.676L123.424 108.651H112.463Z" stroke="black" stroke-width="0.379967"/>
+<path d="M51.5008 42.3113H20.2695L39.0383 3.60938H110.81L129.579 42.3113H98.3476" stroke="black" stroke-width="0.379967"/>
+<path d="M69.5195 76.2007L71.021 74.518L74.9249 73.7969L78.8288 74.518L80.3303 76.2007L78.8288 78.1238L74.9249 78.6046L71.021 78.1238L69.5195 76.2007Z" stroke="black" stroke-width="0.379967"/>
+</g>
+<defs>
+<clipPath id="clip0_2122_162300">
+<rect width="150" height="150" fill="white"/>
+</clipPath>
+</defs>
+</svg>

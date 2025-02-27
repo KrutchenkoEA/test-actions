@@ -1,0 +1,12 @@
+@mixin split() {
+  .as-split-gutter {
+    background-color: var(--color-background-popup-widgets) !important;
+    flex-basis: 13px !important;
+    border-top: 1px solid var(--color-borders-and-icons-stroke-shape) !important;
+    border-bottom: 1px solid var(--color-borders-and-icons-stroke-shape) !important;
+  }
+
+  .as-disabled > .as-split-gutter .as-split-gutter-icon {
+    background-image: none !important;
+  }
+}

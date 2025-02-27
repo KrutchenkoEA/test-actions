@@ -3,12 +3,19 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "strictFunctionTypes": false,
+    "strictPropertyInitialization": false,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "noImplicitReturns": false,
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
-    "noImplicitReturns": true,
+    "paths": {
+      "@tl-platform/mnemo": ["./projects/mnemo"]
+    },
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "isolatedModules": true,

@@ -1,0 +1,201 @@
+$scrollbar-track-color: var(--color-background-popup-widgets);
+$scrollbar-thumb-color: var(--color-color-6);
+$scrollbar-corner: transparent;
+
+@mixin horizontal-scroll(
+  $scrollbar-height: 4px,
+  $scrollbar-margin-x: 2px,
+  $scrollbar-margin-y: 12px,
+  $scrollbar-padding: 1px,
+  $hover: true
+) {
+  overflow-y: hidden;
+  overflow-x: overlay;
+  $height: $scrollbar-height + 2 * ($scrollbar-margin-x + $scrollbar-padding);
+
+  &::-webkit-scrollbar {
+    height: $height;
+    background: transparent;
+    border: $scrollbar-margin-x solid transparent;
+    border-radius: $height * 0.5;
+    position: relative;
+  }
+
+  &::-webkit-scrollbar-track {
+    border: $scrollbar-margin-x solid transparent;
+    box-shadow: 0 0 0 #{$scrollbar-height * 2} inset transparent;
+    border-radius: ($scrollbar-height + $scrollbar-margin-x);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: ($scrollbar-height + $scrollbar-margin-x) * 2;
+    border: $scrollbar-margin-x + $scrollbar-padding solid transparent;
+    box-shadow: 0 0 0 $scrollbar-height inset transparent;
+  }
+
+  &::-webkit-scrollbar-button {
+    width: max($scrollbar-margin-y - $scrollbar-margin-x, 0);
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: $scrollbar-corner;
+  }
+
+  @if ($hover) {
+    &:hover {
+      &::-webkit-scrollbar-track {
+        box-shadow: 0 0 0 #{$scrollbar-height * 2} inset $scrollbar-track-color;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        box-shadow: 0 0 0 #{$scrollbar-height} inset $scrollbar-thumb-color;
+      }
+    }
+  } @else {
+    &::-webkit-scrollbar-track {
+      box-shadow: 0 0 0 #{$scrollbar-height * 2} inset $scrollbar-track-color;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      box-shadow: 0 0 0 #{$scrollbar-height} inset $scrollbar-thumb-color;
+    }
+  }
+}
+
+@mixin vertical-scroll(
+  $scrollbar-width: 6px,
+  $scrollbar-margin-x: 6px,
+  $scrollbar-margin-y: 12px,
+  $scrollbar-padding: 1px,
+  $direction: ltr,
+  $hover: true
+) {
+  overflow-y: overlay;
+  overflow-x: hidden;
+  direction: $direction;
+  $width: $scrollbar-width + 2 * ($scrollbar-margin-x + $scrollbar-padding);
+
+  &::-webkit-scrollbar {
+    width: $width;
+    background: transparent;
+    border: $scrollbar-margin-x solid transparent;
+    border-radius: $width * 0.5;
+    position: relative;
+  }
+
+  &::-webkit-scrollbar-track {
+    border: $scrollbar-margin-x solid transparent;
+    box-shadow: 0 0 0 #{$scrollbar-width * 2} inset transparent;
+    border-radius: ($scrollbar-width + $scrollbar-margin-x);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: ($scrollbar-width + $scrollbar-margin-x) * 2;
+    border: $scrollbar-margin-x + $scrollbar-padding solid transparent;
+    box-shadow: 0 0 0 $scrollbar-width inset transparent;
+  }
+
+  &::-webkit-scrollbar-button {
+    height: max($scrollbar-margin-y - $scrollbar-margin-x, 0);
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: $scrollbar-corner;
+  }
+
+  @if ($hover) {
+    &:hover {
+      &::-webkit-scrollbar-track {
+        box-shadow: 0 0 0 #{$scrollbar-width * 2} inset $scrollbar-track-color;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        box-shadow: 0 0 0 #{$scrollbar-width} inset $scrollbar-thumb-color;
+      }
+    }
+  } @else {
+    &::-webkit-scrollbar-track {
+      box-shadow: 0 0 0 #{$scrollbar-width * 2} inset $scrollbar-track-color;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      box-shadow: 0 0 0 #{$scrollbar-width} inset $scrollbar-thumb-color;
+    }
+  }
+}
+
+@mixin horizontal-vertical-scroll(
+  $scrollbar-size: 6px,
+  $scrollbar-margin-x: 6px,
+  $scrollbar-margin-y: 12px,
+  $scrollbar-padding: 1px,
+  $direction: ltr,
+  $hover: true
+) {
+  overflow: overlay;
+  direction: $direction;
+  $height: $scrollbar-size + 2 * ($scrollbar-margin-x + $scrollbar-padding);
+  $width: $scrollbar-size + 2 * ($scrollbar-margin-x + $scrollbar-padding);
+
+  &::-webkit-scrollbar {
+    height: $height;
+    width: $width;
+    background: transparent;
+    border: $scrollbar-margin-x solid transparent;
+    border-radius: $height * 0.5;
+    position: relative;
+  }
+
+  &::-webkit-scrollbar:horizontal {
+    width: $scrollbar-size;
+    height: $height;
+  }
+
+  &::-webkit-scrollbar:vertical {
+    width: $width;
+    height: 100%;
+  }
+
+  &::-webkit-scrollbar-track {
+    border: $scrollbar-margin-x solid transparent;
+    box-shadow: 0 0 0 #{$scrollbar-size * 2} inset transparent;
+    border-radius: ($scrollbar-size + $scrollbar-margin-x);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: ($scrollbar-size + $scrollbar-margin-x) * 2;
+    border: $scrollbar-margin-x + $scrollbar-padding solid transparent;
+    box-shadow: 0 0 0 $scrollbar-size inset transparent;
+  }
+
+  &::-webkit-scrollbar-button {
+    width: max($scrollbar-margin-y - $scrollbar-margin-x, 0);
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: $scrollbar-corner;
+  }
+
+  @if ($hover) {
+    &:hover {
+      &::-webkit-scrollbar-track {
+        box-shadow: 0 0 0 #{$scrollbar-size * 2} inset $scrollbar-track-color;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        box-shadow: 0 0 0 #{$scrollbar-size} inset $scrollbar-thumb-color;
+      }
+    }
+  } @else {
+    &::-webkit-scrollbar-track {
+      box-shadow: 0 0 0 #{$scrollbar-size * 2} inset $scrollbar-track-color;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      box-shadow: 0 0 0 #{$scrollbar-size} inset $scrollbar-thumb-color;
+    }
+  }
+}

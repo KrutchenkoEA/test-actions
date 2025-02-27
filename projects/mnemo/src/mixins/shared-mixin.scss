@@ -1,0 +1,110 @@
+$heading-size: 16px;
+$font-size: 13px;
+$icon-color: var(--color-text-signatures-and-future);
+$font-color: var(--color-text-main-and-axis-labels);
+$contrast-color: var(--color-text-contrast);
+
+$bar-height: 64px;
+$header-height: 54px;
+$header-background: var(--color-background-widget-headers);
+$border: var(--color-borders-and-icons-stroke-shape);
+$border-light: var(--color-borders-and-icons-icons);
+$body-background: var(--color-background-popup-widgets);
+$color-logo: var(--color-logo);
+$shadow-color: var(--color-borders-and-icons-dark-border);
+
+@mixin loading-shade($opacity: 0.5) {
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: $opacity;
+  background-color: var(--color-background-dashboards-forms);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: inherit;
+}
+
+@mixin skeleton-loader() {
+  .skeleton-loader {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 15px;
+    margin-left: 20px;
+    height: 100%;
+  }
+}
+
+@mixin line-loader($opacity: 1, $size: 200px, $duration: 2s) {
+  position: relative;
+  opacity: $opacity;
+  cursor: default;
+  pointer-events: none;
+  transform: translate3d(0, 0, 0);
+
+  &::after,
+  &::before {
+    animation: progress $duration ease-in-out infinite;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 100%;
+    content: '';
+    background-size: $size 100%;
+    background-image: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0));
+  }
+
+  @keyframes progress {
+    0% {
+      transform: translate3d(-200px, 0, 0);
+    }
+
+    100% {
+      transform: translate3d(calc(200px + 100vw), 0, 0);
+    }
+  }
+}
+
+@mixin no-data($height: 500px) {
+  .no-data {
+    width: 100%;
+    height: $height;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
+
+    .img {
+      color: var(--color-borders-and-icons-icons);
+      margin-bottom: 25px;
+    }
+
+    span.message,
+    span.title {
+      text-align: center;
+      color: var(--color-text-contrast);
+    }
+
+    span.title {
+      font-weight: 700;
+      font-size: 28px;
+    }
+
+    span.message {
+      font-weight: 500;
+      font-size: 18px;
+    }
+
+    .color-logo {
+      stroke: var(--color-logo);
+    }
+  }
+}
