@@ -11,7 +11,7 @@ interface IShapeItem {
 const fs = require('fs');
 const path = require('path');
 
-const localePath = path.join(__dirname, `..\\shapes`);
+const localePath = path.join(__dirname, `..\\i18n\\shapes`);
 const ruData = JSON.parse(fs.readFileSync(`${localePath}\\ru.json`).toString());
 const enData = JSON.parse(fs.readFileSync(`${localePath}\\en.json`).toString());
 const faData = JSON.parse(fs.readFileSync(`${localePath}\\fa.json`).toString());

@@ -4,7 +4,7 @@ const path = require('path');
 
 const shapePrefix = 'shapes';
 const importedShapes = new ShapeCreator(
-  path.join(__dirname, `..\\..\\..\\shapes\\${shapePrefix}`),
+  path.join(__dirname, `..\\${shapePrefix}`),
   shapePrefix,
   path.join(__dirname, `..\\`)
 );
