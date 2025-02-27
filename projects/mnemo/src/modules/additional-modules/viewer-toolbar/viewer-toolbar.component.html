@@ -1,0 +1,67 @@
+<div *transloco="let t; read: 'mnemo.ViewerToolbarComponent'" [ngClass]="buttonDirection" class="viewer-toolbar">
+  <ng-container *ngIf="isSelectedNodeType$ | async as nodeType">
+    <button
+      *ngIf="nodeType !== 'dashboard'"
+      (click)="onClickButton('zoomIn')"
+      btnStyle="secondary"
+      matTooltip="{{ t('zoomIn') }}"
+      size="sm"
+      tluiButton
+    >
+      <svg-icon class="tlui-icon--sm" src="tluiIconSearchPlus"></svg-icon>
+    </button>
+    <button
+      *ngIf="nodeType !== 'dashboard'"
+      (click)="onClickButton('zoomOut')"
+      btnStyle="secondary"
+      matTooltip="{{ t('zoomOut') }}"
+      size="sm"
+      tluiButton
+    >
+      <svg-icon class="tlui-icon--sm" src="tluiIconSearchMinus"></svg-icon>
+    </button>
+    <button
+      *ngIf="nodeType !== 'dashboard'"
+      (click)="onClickButton('zoomDefault')"
+      btnStyle="secondary"
+      matTooltip="{{ t('zoomDefault') }}"
+      size="sm"
+      tluiButton
+    >
+      <svg-icon class="tlui-icon--sm" src="tluiIconSearch"></svg-icon>
+    </button>
+    <button
+      (click)="onClickButton('refresh')"
+      [disabled]="(viewerRefreshService.isUpdateData$ | async) || (playerModeService.isPlayerMode$ | async)"
+      btnStyle="secondary"
+      matTooltip="{{ t('refresh') }}"
+      size="sm"
+      tluiButton
+    >
+      <svg-icon class="tlui-icon--sm" src="tluiIconReturnCircle"></svg-icon>
+    </button>
+    <button
+      (click)="onClickButton('stopRefresh')"
+      [disabled]="(viewerRefreshService.isUpdateData$ | async) === false || (playerModeService.isPlayerMode$ | async)"
+      btnStyle="secondary"
+      matTooltip="{{ t('stopRefresh') }}"
+      size="sm"
+      tluiButton
+    >
+      <svg-icon class="tlui-icon--sm" src="tluiIconForbidden"></svg-icon>
+    </button>
+    <button (click)="onClickButton('save')" btnStyle="secondary" matTooltip="{{ t('saveXml') }}" size="sm" tluiButton>
+      <svg-icon class="tlui-icon--sm" src="tluiIconClipboardLoad"></svg-icon>
+    </button>
+    <button
+      *ngIf="nodeType === 'mnemoscheme'"
+      (click)="onClickButton('print')"
+      btnStyle="secondary"
+      matTooltip="{{ 'mnemo.shared.print' | transloco }}"
+      size="sm"
+      tluiButton
+    >
+      <svg-icon class="tlui-icon--sm" src="tluiIconPrint"></svg-icon>
+    </button>
+  </ng-container>
+</div>

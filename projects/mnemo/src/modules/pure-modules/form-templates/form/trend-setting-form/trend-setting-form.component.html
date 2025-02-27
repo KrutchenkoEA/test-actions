@@ -1,0 +1,142 @@
+<ng-container *transloco="let t; read: 'mnemo.ChartSettingComponent'" [formGroup]="optionsForm">
+  <tlui-accordion [multiple]="true" class="accordion-container">
+    <ng-template [tluiAccordionItemExpanded]="isExpanded" [tluiAccordionItem]="t('lineLayer')">
+      <div class="tab-content" formGroupName="config">
+        <div class="tab-content__item">
+          <tlui-checkbox formControlName="interpolateEnable" size="md"
+            >{{ t('LineLayer.interpolateEnable') }}
+          </tlui-checkbox>
+        </div>
+        <div class="tab-content__item">
+          <div>{{ t('LineLayer.extendStep') }}</div>
+          <tlui-form-field tluiDirDirective>
+            <tlui-number-input [max]="1000" [min]="1" [step]="1" formControlName="extendStep"></tlui-number-input>
+          </tlui-form-field>
+        </div>
+        <div class="tab-content__item">
+          <div>{{ t('LineLayer.lineDynamics') }}</div>
+          <tlui-form-field>
+            <select formControlName="lineDynamics" size="sm" tluiInput>
+              <ng-container *ngFor="let option of interpolation">
+                <option [value]="option">{{ option }}</option>
+              </ng-container>
+            </select>
+          </tlui-form-field>
+        </div>
+        <hr class="tab-delimeter" />
+        <div class="tab-content__item">
+          <div>{{ t('LineLayer.dataPointType') }}</div>
+          <tlui-form-field>
+            <select formControlName="dataPointType" size="sm" tluiInput>
+              <ng-container *ngFor="let option of ['all', 'partial']">
+                <option [value]="option">{{ t(option) }}</option>
+              </ng-container>
+            </select>
+          </tlui-form-field>
+        </div>
+        <div class="tab-content__item">
+          <div>{{ t('LineLayer.dataPointMarker') }}</div>
+          <tlui-form-field>
+            <select formControlName="dataPointMarker" size="sm" tluiInput>
+              <ng-container *ngFor="let option of dataMarkers">
+                <option [value]="option">{{ option }}</option>
+              </ng-container>
+            </select>
+          </tlui-form-field>
+        </div>
+        <hr class="tab-delimeter" />
+        <div class="tab-content__item">
+          <tlui-checkbox formControlName="breakPoint" size="md">{{ t('LineLayer.breakPoint') }}</tlui-checkbox>
+        </div>
+        <div class="tab-content__item">
+          <div>{{ t('LineLayer.breakPointMarker') }}</div>
+          <tlui-form-field>
+            <select formControlName="breakPointMarker" size="sm" tluiInput>
+              <ng-container *ngFor="let option of markers">
+                <option [value]="option">{{ option }}</option>
+              </ng-container>
+            </select>
+          </tlui-form-field>
+        </div>
+        <div class="tab-content__item">
+          <label>{{ t('LineLayer.breakPointSize') }}</label>
+          <tlui-slider
+            [inputs]="true"
+            [labels]="true"
+            [max]="20"
+            [min]="1"
+            [step]="1"
+            formControlName="breakPointSize"
+          ></tlui-slider>
+        </div>
+        <hr class="tab-delimeter" />
+        <div class="tab-content__item">
+          <tlui-checkbox formControlName="endPoint" size="md">{{ t('LineLayer.endPoint') }}</tlui-checkbox>
+        </div>
+        <div class="tab-content__item">
+          <label>{{ t('LineLayer.endPointSize') }}</label>
+          <tlui-slider
+            [inputs]="true"
+            [labels]="true"
+            [max]="20"
+            [min]="1"
+            [step]="1"
+            formControlName="endPointSize"
+          ></tlui-slider>
+        </div>
+      </div>
+      <hr class="tab-delimeter" />
+      <div class="tab-content" formGroupName="common">
+        <div class="tab-content__item">
+          <tlui-checkbox formControlName="showValues" size="md">{{ t('CommonLayer.showValues') }}</tlui-checkbox>
+        </div>
+        <div class="tab-content__item">
+          <label>{{ t('CommonLayer.valuesFontSizePx') }}</label>
+          <tlui-slider
+            [inputs]="true"
+            [labels]="true"
+            [max]="18"
+            [min]="1"
+            [step]="1"
+            formControlName="valuesFontSizePx"
+          ></tlui-slider>
+        </div>
+        <div class="tab-content__item">
+          <tlui-checkbox formControlName="animation" size="md">{{ t('CommonLayer.animation') }}</tlui-checkbox>
+        </div>
+        <div class="tab-content__item">
+          <label>{{ t('CommonLayer.durationAnimation') }}</label>
+          <tlui-slider
+            [inputs]="true"
+            [labels]="true"
+            [max]="5000"
+            [min]="100"
+            [step]="100"
+            formControlName="durationAnimation"
+          ></tlui-slider>
+        </div>
+        <div class="tab-content__item">
+          <label>{{ t('CommonLayer.durationToggleAnimation') }}</label>
+          <tlui-slider
+            [inputs]="true"
+            [labels]="true"
+            [max]="5000"
+            [min]="100"
+            [step]="100"
+            formControlName="durationToggleAnimation"
+          ></tlui-slider>
+        </div>
+        <div class="tab-content__item">
+          <tlui-checkbox formControlName="reRangeThenDataChange" size="md"
+            >{{ t('CommonLayer.reRangeThenDataChange') }}
+          </tlui-checkbox>
+        </div>
+        <div class="tab-content__item">
+          <tlui-checkbox formControlName="reRangeThenLegendClick" size="md"
+            >{{ t('CommonLayer.reRangeThenLegendClick') }}
+          </tlui-checkbox>
+        </div>
+      </div>
+    </ng-template>
+  </tlui-accordion>
+</ng-container>

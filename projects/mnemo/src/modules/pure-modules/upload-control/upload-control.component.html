@@ -1,0 +1,27 @@
+<div
+  *transloco="let t; read: 'message.UploadControlComponent'"
+  [class.container_active]="isDragging$ | async"
+  class="container"
+>
+  <input
+    (change)="onFileChange($event)"
+    [accept]="accept"
+    [multiple]="false"
+    #fileInput
+    class="file-input"
+    required
+    type="file"
+  />
+  <ng-container *ngIf="isDragging$ | async">
+    <p>{{ t('dropFile') }} {{ extension }}</p>
+    <svg-icon class="icon" src="tluiIconCloudSave"></svg-icon>
+  </ng-container>
+  <div (click)="fileInput.click()" class="container__form-container">
+    <!--    <button btnStyle="primary"-->
+    <!--            tluiButton-->
+    <!--            type="button">-->
+    <!--      <svg-icon class="icon" src="tluiIconCloudSave"></svg-icon>-->
+    <!--      &nbsp; {{ t('loadFile') }} {{extension}}-->
+    <!--    </button>-->
+  </div>
+</div>

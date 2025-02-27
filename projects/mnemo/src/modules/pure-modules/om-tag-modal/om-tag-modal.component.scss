@@ -1,0 +1,12 @@
+@import 'projects/shared/mnemo/mixins/popup-mixin';
+
+* {
+  box-sizing: border-box;
+  font-family: Inter, sans-serif;
+}
+
+@include popup(800px, 800px, true);
+
+.content {
+  overflow: hidden !important;
+}

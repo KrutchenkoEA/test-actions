@@ -1,0 +1,122 @@
+<ng-container *transloco="let t; read: 'mnemo.ActiveShapeMultiLineChartOptionsComponent'" [formGroup]="optionsForm">
+  <tlui-accordion [multiple]="true" class="accordion-container">
+    <ng-template [tluiAccordionItemExpanded]="true" [tluiAccordionItem]="t('chart')">
+      <div class="tab-content">
+        <div class="tab-content__item">
+          <tlui-checkbox formControlName="isLegendEnabled" size="md">{{ t('isLegendEnabled') }}</tlui-checkbox>
+        </div>
+        <div class="tab-content__item">
+          <tlui-checkbox formControlName="isTooltipEnabled" size="md">{{ t('isTooltipEnabled') }}</tlui-checkbox>
+        </div>
+        <div class="tab-content__item">
+          <tlui-checkbox formControlName="isSmartScrollEnabled" size="md"
+            >{{ t('isSmartScrollEnabled') }}
+          </tlui-checkbox>
+        </div>
+        <div class="tab-content__item">
+          <div>{{ t('xLabelType') }}</div>
+          <tlui-form-field>
+            <select formControlName="xLabelType" size="sm" tluiInput>
+              <ng-container *ngFor="let option of ['time', 'number', 'enum']">
+                <option [value]="option">{{ option }}</option>
+              </ng-container>
+            </select>
+          </tlui-form-field>
+        </div>
+        <div class="tab-content__item">
+          <div>{{ t('tooltipType') }}</div>
+          <tlui-form-field>
+            <select formControlName="tooltipType" size="sm" tluiInput>
+              <ng-container *ngFor="let option of ['fullLine', 'dataPoint']">
+                <option [value]="option">{{ t(option) }}</option>
+              </ng-container>
+            </select>
+          </tlui-form-field>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template [tluiAccordionItem]="t('colors')">
+      <div class="tab-content">
+        <div class="tab-content__item">
+          <tlui-checkbox formControlName="isBackgroundColorEnabled" size="md"
+            >{{ t('isBackgroundColorEnabled') }}
+          </tlui-checkbox>
+          <tlui-form-field class="color-select">
+            <input formControlName="backgroundColor" size="sm" tluiInput type="color" />
+          </tlui-form-field>
+        </div>
+        <div class="tab-content__item">
+          <tlui-checkbox formControlName="isGridColorEnabled" size="md">{{ t('isGridColorEnabled') }}</tlui-checkbox>
+          <tlui-form-field class="color-select">
+            <input formControlName="gridColor" size="sm" tluiInput type="color" />
+          </tlui-form-field>
+        </div>
+        <div class="tab-content__item">
+          <tlui-checkbox formControlName="isAxisesColorEnabled" size="md"
+            >{{ t('isAxisesColorEnabled') }}
+          </tlui-checkbox>
+          <tlui-form-field class="color-select">
+            <input formControlName="axisesColor" size="sm" tluiInput type="color" />
+          </tlui-form-field>
+        </div>
+        <div class="tab-content__item">
+          <tlui-checkbox formControlName="isAxisValuesColorEnabled" size="md"
+            >{{ t('isAxisValuesColorEnabled') }}
+          </tlui-checkbox>
+          <tlui-form-field class="color-select">
+            <input formControlName="axisValuesColor" size="sm" tluiInput type="color" />
+          </tlui-form-field>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template [tluiAccordionItem]="t('zoom')">
+      <div class="tab-content">
+        <div class="tab-content__item">
+          <tlui-checkbox formControlName="reRangeEnable" size="md">{{ t('reRangeEnable') }}</tlui-checkbox>
+        </div>
+        <div class="tab-content__item">
+          <tlui-checkbox formControlName="zoomXEnable" size="md">{{ t('zoomXEnable') }}</tlui-checkbox>
+        </div>
+        <div class="tab-content__item">
+          <tlui-checkbox formControlName="zoomYEnable" size="md">{{ t('zoomYEnable') }}</tlui-checkbox>
+        </div>
+        <div class="tab-content__item">
+          <div>{{ t('zoomType') }}</div>
+          <tlui-form-field>
+            <select formControlName="zoomType" size="sm" tluiInput>
+              <ng-container *ngFor="let option of ['none', 'brush', 'scroll']">
+                <option [value]="option">{{ t(option) }}</option>
+              </ng-container>
+            </select>
+          </tlui-form-field>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template [tluiAccordionItem]="t('barChart')">
+      <div class="tab-content">
+        <div class="tab-content__item">
+          <tlui-checkbox formControlName="isBarBorder" size="md">{{ t('isBarBorder') }}</tlui-checkbox>
+        </div>
+        <div class="tab-content__item">
+          <tlui-checkbox formControlName="isShowValue" size="md">{{ t('isShowValue') }}</tlui-checkbox>
+        </div>
+        <div class="tab-content__item">
+          <tlui-checkbox formControlName="showNormalizeValue" size="md">{{ t('showNormalizeValue') }}</tlui-checkbox>
+        </div>
+        <div class="tab-content__item">
+          <div>{{ t('valuePosition') }}</div>
+          <tlui-form-field>
+            <select formControlName="valuePosition" size="sm" tluiInput>
+              <ng-container *ngFor="let option of ['top', 'center', 'bottom']">
+                <option [value]="option">{{ t(option) }}</option>
+              </ng-container>
+            </select>
+          </tlui-form-field>
+        </div>
+      </div>
+    </ng-template>
+  </tlui-accordion>
+</ng-container>

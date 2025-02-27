@@ -1,0 +1,41 @@
+<form
+  *transloco="let t; read: 'mnemo.ChartPageCreateComponent'"
+  (ngSubmit)="onSave()"
+  [formGroup]="form"
+  class="container"
+>
+  <div class="header">
+    <div class="title">{{ t('addValue') }}</div>
+    <svg-icon (click)="onClose()" class="tlui-icon--sm close" src="tluiIconClose"></svg-icon>
+  </div>
+  <div class="content">
+    <!--    <tl-mnemo-viewer-upload-control-->
+    <!--      (fileUpload)="onFileUpload($event)"-->
+    <!--      [accept]="['text/plain', 'application/json']"-->
+    <!--      [extension]="'*.json, *.txt'"-->
+    <!--      [isXml]="false"-->
+    <!--    ></tl-mnemo-viewer-upload-control>-->
+
+    <tlui-form-field class="tlui-mb--xs tlui-display--block" tluiDirDirective>
+      <textarea
+        [floatPlaceholder]="true"
+        [placeholder]="t('userValue')"
+        [rows]="14"
+        formControlName="textarea"
+        tluiInput
+      >
+      </textarea>
+    </tlui-form-field>
+    <tlui-form-field class="tlui-mb--xs tlui-display--block" tluiDirDirective>
+      <input [floatPlaceholder]="true" [placeholder]="t('trendName')" formControlName="name" size="lg" tluiInput />
+    </tlui-form-field>
+  </div>
+  <div class="footer">
+    <button btnStyle="primary" size="md" tluiButton type="submit">
+      {{ t('addTrend') }}
+    </button>
+    <button (click)="onClose()" btnStyle="secondary" size="md" tluiButton type="reset">
+      {{ 'mnemo.shared.close' | transloco }}
+    </button>
+  </div>
+</form>

@@ -1,0 +1,7 @@
+@import 'projects/shared/mnemo/mixins/popup-mixin';
+
+* {
+  box-sizing: border-box;
+}
+
+@include popup(800px, 800px, true);

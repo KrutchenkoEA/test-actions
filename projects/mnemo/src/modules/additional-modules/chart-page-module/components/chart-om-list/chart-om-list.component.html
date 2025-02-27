@@ -1,0 +1,66 @@
+<div
+  *transloco="let t; read: 'mnemo.ChartPageSelectorComponent'"
+  [ngClass]="'predictors-list_' + cPDataService.currentDirection"
+  class="predictors-list"
+>
+  <div
+    *ngFor="let item of cPDataService.activeOmAttrMap | keyvalue; let i = index"
+    (click)="selectPredictor(item.value)"
+    [class.line-loader]="chartWrapService.chartWrapLoading$ | async"
+    [class.predictor_active]="item.value.isActive"
+    [class.predictor_disabled]="item.value.attrType === 1 || item.value.attrType === 4 || item.value.attrType === 5"
+    class="predictor"
+    matRipple
+    matRippleColor="var(--color-logo-50)"
+    tluiDirDirective
+  >
+    <div class="predictor__title">
+      <div [ngStyle]="{ backgroundColor: getPredictorColor(item.key) }" class="marker"></div>
+      <span matTooltip="{{ item.value.attrGuid }}">{{ item.value.name }}</span>
+    </div>
+    <div class="predictor__setting">
+      <button
+        (click)="openSettingPopup($event, item.value, item.key)"
+        [disabled]="checkSetting(item.value.attrGuid)"
+        btnStyle="tertiary"
+        class="predictor__button"
+        matTooltip="{{ t('advancedSettings') }}"
+        size="sm"
+        tluiButton
+      >
+        <svg-icon class="tlui-icon--sm" src="tluiIconSets"></svg-icon>
+        <svg-icon *ngIf="isChanged(item.value.attrGuid)" class="predictor__button_changed" src="tluiIconEditPen">
+        </svg-icon>
+      </button>
+    </div>
+    <div
+      *ngIf="isSeparateLayer(item.value.attrGuid)"
+      (click)="catchEvent($event)"
+      class="predictor__info predictor__info_good predictor__info_blink"
+    >
+      <svg-icon
+        (click)="catchEvent($event)"
+        matTooltip="{{ 'mnemo.ChartSettingComponent.separateLayer' | transloco }}"
+        src="tluiIconChartMountainCorner"
+      >
+      </svg-icon>
+    </div>
+    <div
+      (click)="catchEvent($event)"
+      [class.predictor__info_warning]="
+        item.value.attrType === 1 || item.value.attrType === 4 || item.value.attrType === 5
+      "
+      class="predictor__info"
+    >
+      <svg-icon (click)="catchEvent($event)" [matTooltip]="getAttrType(item.value.attrType)" src="tluiIconInfoCircle">
+      </svg-icon>
+    </div>
+    <div
+      *ngIf="isEmptyData(item.value.attrGuid)"
+      (click)="catchEvent($event)"
+      class="predictor__info predictor__info_error predictor__info_blink"
+    >
+      <svg-icon (click)="catchEvent($event)" [matTooltip]="t('emptyText')" src="tluiIconAlertAlarm"> </svg-icon>
+    </div>
+  </div>
+</div>

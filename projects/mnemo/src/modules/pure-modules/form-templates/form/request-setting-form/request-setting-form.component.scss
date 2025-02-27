@@ -1,0 +1,32 @@
+@import 'projects/shared/mnemo/mixins/setting-accordion';
+
+@include setting-accordion();
+
+.axis-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.axis-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+
+  .axis-label {
+    border: 1px solid var(--color-borders-and-icons-stroke-shape);
+    border-radius: 4px;
+    padding: 2px 4px;
+  }
+
+  &_active,
+  &:hover {
+    .axis-label {
+      border: 1px solid var(--color-logo);
+    }
+  }
+}

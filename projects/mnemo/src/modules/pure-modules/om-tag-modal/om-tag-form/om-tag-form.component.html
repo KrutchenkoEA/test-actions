@@ -1,0 +1,146 @@
+<div *transloco="let t; read: 'mnemo.OmTagModalComponent'" [formGroup]="form" class="wrapper">
+  <div class="wrapper__header">
+    <tlui-form-field [class]="methods?.length > 1 ? 'tlui-display--block' : 'tlui-display--none'" tluiDirDirective>
+      <tlui-select
+        [floatPlaceholder]="true"
+        [language]="language$ | async"
+        [placeholder]="t('source')"
+        formControlName="method"
+        size="lg"
+      >
+        <tlui-option *ngFor="let method of methods" [value]="method">{{ t(method) }}</tlui-option>
+      </tlui-select>
+    </tlui-form-field>
+
+    @if (showConnection) {
+      <tlui-form-field class="tlui-display--block tlui-disabled" tluiDirDirective>
+        <tlui-select
+          [floatPlaceholder]="true"
+          [language]="language$ | async"
+          [placeholder]="t('connection')"
+          formControlName="connection"
+          size="lg"
+        >
+          <tlui-option *ngFor="let c of connections" [value]="c">{{ c?.name }}</tlui-option>
+        </tlui-select>
+      </tlui-form-field>
+    }
+
+    <tlui-form-field *ngIf="currentMethod === 'tag'" class="tlui-display--block" tluiDirDirective>
+      <svg-icon (click)="search()" class="tlui-cursor--pointer" src="tluiIconSearch" tluiPrefix></svg-icon>
+      <input
+        (keyup)="searchKeyboardClick($event)"
+        [placeholder]="t('tag')"
+        formControlName="search"
+        size="lg"
+        tluiInput
+        type="text"
+      />
+    </tlui-form-field>
+  </div>
+  <as-split [direction]="'vertical'">
+    <as-split-area [size]="splitSize">
+      @if (currentMethod === 'tag') {
+        <tags-table
+          (selectedEmitter)="selectAttributes($event)"
+          [baseUrl]="baseUrl"
+          [clear]="clear$ | async"
+          [multipleSelect]="multipleSelect"
+          [newSelection]="selected$ | async"
+          [searchString]="searchString$ | async"
+        >
+        </tags-table>
+      }
+
+      @if (currentMethod === 'objectModel') {
+        <objects-list-wrapper
+          (selectedEmitter)="selectAttributes($event)"
+          [baseUrl]="baseUrl"
+          [cacheAttributes]="cacheAttributes"
+          [cacheTree]="cacheTree"
+          [clear]="clear$ | async"
+          [enablePropTable]="enablePropTable"
+          [filterAttributeType]="filterAttributeType"
+          [multipleSelectObject]="multipleSelectObject"
+          [multipleSelect]="multipleSelect"
+          [newSelection]="selected$ | async"
+          [selectedPathArray]="selectedPathArray"
+        >
+        </objects-list-wrapper>
+      }
+    </as-split-area>
+    <as-split-area>
+      <div *ngIf="selected?.tags?.length || selected?.tagsFromObjects?.length" class="selected-tags">
+        <span class="title">{{ t('selectedTags') }}</span>
+        <span *ngFor="let t of selected?.tags; index as idx" class="tag">
+          {{ t?.tagName }}
+          <svg-icon
+            (click)="deleteItem(idx, selected?.tags, 'tags')"
+            class="delete-icon"
+            src="tluiIconClose"
+          ></svg-icon>
+        </span>
+        <span *ngFor="let ot of selected?.tagsFromObjects; index as idx" class="tag">
+          {{ ot?.inputData }}
+          <svg-icon
+            (click)="deleteItem(idx, selected?.tagsFromObjects, 'tags')"
+            class="delete-icon"
+            src="tluiIconClose"
+          ></svg-icon>
+        </span>
+      </div>
+
+      <div *ngIf="selected?.constants?.length" class="selected-tags">
+        <span class="title">{{ t('selectedConstants') }}</span>
+        <span *ngFor="let t of selected?.constants; index as idx" class="tag">
+          {{ t?.name }}
+          <svg-icon
+            (click)="deleteItem(idx, selected?.constants, 'constants')"
+            class="delete-icon"
+            src="tluiIconClose"
+          ></svg-icon
+        ></span>
+      </div>
+
+      <div *ngIf="selected?.formulas?.length" class="selected-tags">
+        <span class="title">{{ t('selectedFormulas') }}</span>
+        <span *ngFor="let t of selected?.formulas; index as idx" class="tag">
+          {{ t?.name }}
+          <svg-icon
+            (click)="deleteItem(idx, selected?.formulas, 'formulas')"
+            class="delete-icon"
+            src="tluiIconClose"
+          ></svg-icon
+        ></span>
+      </div>
+
+      <div *ngIf="selected?.SQLs?.length" class="selected-tags">
+        <span class="title">{{ t('selectedAttributes') }}</span>
+        <span *ngFor="let t of selected?.SQLs; index as idx" class="tag">
+          {{ t?.name }}
+          <svg-icon (click)="deleteItem(idx, selected?.SQLs, 'SQLs')" class="delete-icon" src="tluiIconClose"></svg-icon
+        ></span>
+      </div>
+
+      <div *ngIf="selected?.urls?.length" class="selected-tags">
+        <span class="title">{{ t('selectedUrls') }}</span>
+        <span *ngFor="let t of selected?.urls; index as idx" class="tag">
+          {{ t?.name }}
+          <svg-icon (click)="deleteItem(idx, selected?.urls, 'urls')" class="delete-icon" src="tluiIconClose"></svg-icon
+        ></span>
+      </div>
+
+      <div *ngIf="selected?.attributes?.length" class="selected-tags">
+        <span class="title">{{ t('selectedAttributes') }}</span>
+        <span *ngFor="let t of selected?.attributes; index as idx" class="tag">
+          {{ t?.attrName }}
+          <svg-icon
+            (click)="deleteItem(idx, selected?.attributes, 'attributes')"
+            class="delete-icon"
+            src="tluiIconClose"
+          ></svg-icon
+        ></span>
+      </div>
+    </as-split-area>
+  </as-split>
+</div>

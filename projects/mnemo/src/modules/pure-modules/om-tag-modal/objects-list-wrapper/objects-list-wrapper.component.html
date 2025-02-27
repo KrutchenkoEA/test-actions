@@ -1,0 +1,92 @@
+<ng-container *transloco="let t; read: 'mnemo.OmTagModalComponent'">
+  <as-split [direction]="'vertical'">
+    <as-split-area [size]="80">
+      <om-tag-object-tree
+        (checkboxSelectedEmitter)="selectCheckbox($event)"
+        (itemSelectedEmitter)="selectObject($event)"
+        [baseUrl]="baseUrl"
+        [cacheTree]="cacheTree"
+        [clear]="clear$ | async"
+        [loading]="isLoadingTree$ | async"
+        [multipleSelectObject]="multipleSelectObject"
+        [multipleSelect]="multipleSelect"
+        [newSelectedPathArray]="newSelectedPathArray$ | async"
+        [selectedPathArray]="selectedPathArray"
+        class="content object-list"
+      >
+      </om-tag-object-tree>
+    </as-split-area>
+    <as-split-area>
+      @if (enablePropTable && !!selectedObject) {
+        <div class="content">
+          @if (isLoadingPropTable) {
+            <ng-container *ngTemplateOutlet="loader"></ng-container>
+          } @else if (!attributes?.length) {
+            <ng-container *ngTemplateOutlet="emptyObject"></ng-container>
+          } @else {
+            <cdk-virtual-scroll-viewport
+              [maxBufferPx]="attributes?.length * 36 ?? 800"
+              [minBufferPx]="attributes?.length * 36 ?? 800"
+              class="scroll-port"
+              itemSize="36"
+            >
+              <table class="search-table">
+                <thead class="sticky">
+                  <tr>
+                    <td tluiDirDirective>{{ t('attributeName') }}</td>
+                    <td tluiDirDirective>{{ t('dataField') }}</td>
+                    <td tluiDirDirective>{{ t('value') }}</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (attribute of attributes; track attribute.guid) {
+                    <tr
+                      (click)="clickAttribute(attribute)"
+                      [class.disabled]="isDisabledAttribute(attribute)"
+                      [class.selected]="attribute?.isSelected"
+                    >
+                      <td tluiDirDirective>{{ attribute?.name }}</td>
+                      <td tluiDirDirective>{{ attribute?.inputData }}</td>
+                      <td tluiDirDirective>{{ attribute.value.value }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </cdk-virtual-scroll-viewport>
+          }
+        </div>
+      }
+    </as-split-area>
+  </as-split>
+</ng-container>
+
+<ng-template #loader>
+  <div class="skeleton-loader" tluiDirDirective>
+    <ngx-skeleton-loader
+      [theme]="{ width: '150px', height: '30px', backgroundColor: 'var(--color-color-6)' }"
+      appearance="line"
+    ></ngx-skeleton-loader>
+    <ngx-skeleton-loader
+      [theme]="{ width: '200px', height: '30px', backgroundColor: 'var(--color-color-6)' }"
+      appearance="line"
+    ></ngx-skeleton-loader>
+    <ngx-skeleton-loader
+      [theme]="{ width: '100px', height: '30px', backgroundColor: 'var(--color-color-6)' }"
+      appearance="line"
+    ></ngx-skeleton-loader>
+    <ngx-skeleton-loader
+      [theme]="{ width: '200px', height: '30px', backgroundColor: 'var(--color-color-6)' }"
+      appearance="line"
+    ></ngx-skeleton-loader>
+  </div>
+</ng-template>
+
+<ng-template #emptyObject>
+  <div [style.flex]="1" class="no-data" tluiDirDirective>
+    <svg-icon [src]="baseUrl + 'assets/not-selected.svg'" class="img"></svg-icon>
+    <span class="title">{{
+      (selectedDataType.emitterName === 'tags' ? 'mnemo.shared.emptyTag' : 'mnemo.shared.emptyObject') | transloco
+    }}</span>
+    <span class="message">{{ 'mnemo.shared.emptyObjectText' | transloco }}</span>
+  </div>
+</ng-template>

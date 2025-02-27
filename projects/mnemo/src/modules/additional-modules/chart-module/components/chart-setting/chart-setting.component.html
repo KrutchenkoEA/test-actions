@@ -1,0 +1,627 @@
+<div *transloco="let t; read: 'mnemo.ChartSettingComponent'" @popup class="container">
+  <div cdkDrag cdkDragHandle cdkDragRootElement=".cdk-overlay-pane" class="header">
+    <div class="title">{{ t('settings') }}</div>
+    <svg-icon (click)="onClose()" class="tlui-icon--sm close" src="tluiIconClose"></svg-icon>
+  </div>
+  <div class="content">
+    @if (data?.maxSelectedCount) {
+      <div class="group border-bottom">
+        <div class="grid">
+          <tlui-form-field tluiDirDirective>
+            <tlui-number-input
+              [floatPlaceholder]="true"
+              [min]="1"
+              [max]="100"
+              [formControl]="maxSelectedCount"
+              [placeholder]="t('maxSelectedCount')"
+              size="lg"
+            >
+            </tlui-number-input>
+          </tlui-form-field>
+        </div>
+      </div>
+    }
+
+    @if (data?.reqOpt) {
+      <div [formGroup]="reqOpt" class="group border-bottom">
+        <div class="grid">
+          <tlui-form-field tluiDirDirective>
+            <tlui-date-range-picker
+              (keyup)="onKeyboardClick($event)"
+              (onClosed)="onCalendarClose()"
+              [closeOnSelect]="true"
+              [date]="true"
+              [disableSelectPrevDay]="false"
+              [formControlName]="'date'"
+              [iconPosition]="'right'"
+              [language]="language$ | async"
+              [placeholder]="t('selectPeriod')"
+              [time]="true"
+              size="lg"
+            ></tlui-date-range-picker>
+          </tlui-form-field>
+          <tlui-form-field [class]="data.reqOpt.sourceType === 'tag' ? '' : 'tlui-disabled'" tluiDirDirective>
+            <tlui-number-input
+              [floatPlaceholder]="true"
+              [formControlName]="'pointsCount'"
+              [placeholder]="t('pointsCount')"
+              size="lg"
+            >
+            </tlui-number-input>
+          </tlui-form-field>
+          <tlui-form-field class="tlui-form-field_exponent" tluiDirDirective>
+            <input
+              [floatPlaceholder]="true"
+              [formControlName]="'exponent'"
+              [placeholder]="t('exponent')"
+              autocomplete="off"
+              size="lg"
+              tluiInput
+              type="number"
+            />
+            <button
+              (click)="onClickExponent('plus')"
+              btnStyle="tertiary"
+              class="input-button"
+              size="sm"
+              tluiButton
+              type="button"
+            >
+              <svg-icon class="tlui-icon--sm" src="tluiIconPlusAdd"></svg-icon>
+            </button>
+            <button
+              (click)="onClickExponent('minus')"
+              btnStyle="tertiary"
+              class="input-button"
+              size="sm"
+              tluiButton
+              type="button"
+            >
+              <svg-icon class="tlui-icon--sm" src="tluiIconMinusRemove"></svg-icon>
+            </button>
+          </tlui-form-field>
+        </div>
+      </div>
+    }
+
+    <tlui-accordion [multiple]="true">
+      @if (data?.chartOpt) {
+        <ng-template [tluiAccordionItemExpanded]="true" [tluiAccordionItem]="t('chart')">
+          <div [formGroup]="chartForm" class="group border-bottom">
+            <!--        <h2>{{ t('chart') + ': ' + this.data.chartOpt.chartId }}</h2>-->
+            <div class="grid">
+              <div class="column border-right border-bottom">
+                <tlui-checkbox [formControlName]="'zoomXEnable'">{{ t('zoomXEnable') }}</tlui-checkbox>
+                <tlui-checkbox [formControlName]="'zoomYEnable'">{{ t('zoomYEnable') }}</tlui-checkbox>
+                <tlui-checkbox [formControlName]="'interpolateEnable'">{{ t('interpolateEnable') }}</tlui-checkbox>
+              </div>
+
+              <div class="row gap_big border-right border-bottom">
+                <tlui-label>{{ t('zoomType') + ':' }}</tlui-label>
+                <tlui-radio-group [formControlName]="'zoomType'" class="radio-group--column" tluiDirDirective>
+                  <tlui-radio-btn value="scroll"> {{ t('scroll') }}</tlui-radio-btn>
+                  <tlui-radio-btn value="brush"> {{ t('brush') }}</tlui-radio-btn>
+                  <tlui-radio-btn value="none"> {{ t('none') }}</tlui-radio-btn>
+                </tlui-radio-group>
+              </div>
+
+              <div class="column border-bottom">
+                <tlui-checkbox [formControlName]="'smartScrollEnable'">{{ t('smartScrollEnable') }}</tlui-checkbox>
+                <div class="row row-center">
+                  <tlui-label>{{ t('smartScrollColor') }}</tlui-label>
+                  <tlui-form-field class="color" tluiDirDirective>
+                    <input [formControlName]="'smartScrollColor'" size="sm" tluiInput type="color" />
+                  </tlui-form-field>
+                </div>
+                <tlui-form-field tluiDirDirective>
+                  <tlui-number-input
+                    [floatPlaceholder]="true"
+                    [formControlName]="'smartScrollHeight'"
+                    [max]="100"
+                    [min]="1"
+                    [placeholder]="t('smartScrollHeight')"
+                    size="lg"
+                  >
+                  </tlui-number-input>
+                </tlui-form-field>
+              </div>
+
+              <div class="column border-right border-bottom">
+                <tlui-checkbox [formControlName]="'tooltip'">{{ t('tooltip') }}</tlui-checkbox>
+                <div class="row row-center">
+                  <tlui-label>{{ t('tooltipColor') }}</tlui-label>
+                  <tlui-form-field class="color" tluiDirDirective>
+                    <input [formControlName]="'tooltipColor'" size="sm" tluiInput type="color" />
+                  </tlui-form-field>
+                </div>
+                <tlui-form-field tluiDirDirective>
+                  <tlui-number-input
+                    [floatPlaceholder]="true"
+                    [formControlName]="'tooltipWidth'"
+                    [max]="10"
+                    [min]="1"
+                    [placeholder]="t('tooltipWidth')"
+                    size="lg"
+                  >
+                  </tlui-number-input>
+                </tlui-form-field>
+              </div>
+
+              <div class="row gap_big border-right border-bottom">
+                <tlui-label>{{ t('tooltipType') + ':' }}</tlui-label>
+                <tlui-radio-group [formControlName]="'tooltipType'" class="radio-group--column" tluiDirDirective>
+                  <tlui-radio-btn value="dataPoint">{{ t('dataPoint') }}</tlui-radio-btn>
+                  <tlui-radio-btn value="fullLine"> {{ t('fullLine') }}</tlui-radio-btn>
+                </tlui-radio-group>
+              </div>
+
+              <div class="row gap_big border-bottom">
+                <tlui-label>{{ t('markerType') + ':' }}</tlui-label>
+                <tlui-radio-group [formControlName]="'tooltipMarkerType'" class="radio-group--column" tluiDirDirective>
+                  <tlui-radio-btn value="line"> {{ t('line') }}</tlui-radio-btn>
+                  <tlui-radio-btn value="smallCross">{{ t('smallCross') }}</tlui-radio-btn>
+                  <tlui-radio-btn value="fullscreenCross"> {{ t('fullscreenCross') }}</tlui-radio-btn>
+                </tlui-radio-group>
+              </div>
+            </div>
+            <div class="grid-4">
+              <tlui-form-field class="form-field-padding border-bottom" tluiDirDirective>
+                <tlui-number-input
+                  [floatPlaceholder]="true"
+                  [formControlName]="'marginLeft'"
+                  [max]="100"
+                  [min]="1"
+                  [placeholder]="t('marginLeft')"
+                  size="lg"
+                >
+                </tlui-number-input>
+              </tlui-form-field>
+              <tlui-form-field class="form-field-padding border-bottom" tluiDirDirective>
+                <tlui-number-input
+                  [floatPlaceholder]="true"
+                  [formControlName]="'marginRight'"
+                  [max]="100"
+                  [min]="1"
+                  [placeholder]="t('marginRight')"
+                  size="lg"
+                >
+                </tlui-number-input>
+              </tlui-form-field>
+              <tlui-form-field class="form-field-padding border-bottom" tluiDirDirective>
+                <tlui-number-input
+                  [floatPlaceholder]="true"
+                  [formControlName]="'marginBottom'"
+                  [max]="100"
+                  [min]="1"
+                  [placeholder]="t('marginBottom')"
+                  size="lg"
+                >
+                </tlui-number-input>
+              </tlui-form-field>
+              <tlui-form-field class="form-field-padding border-bottom" tluiDirDirective>
+                <tlui-number-input
+                  [floatPlaceholder]="true"
+                  [formControlName]="'marginTop'"
+                  [max]="100"
+                  [min]="1"
+                  [placeholder]="t('marginTop')"
+                  size="lg"
+                >
+                </tlui-number-input>
+              </tlui-form-field>
+            </div>
+          </div>
+        </ng-template>
+      }
+
+      @if (data?.trendOpt) {
+        <ng-template
+          [tluiAccordionItemExpanded]="true"
+          [tluiAccordionItem]="
+            t('trend') +
+            ': ' +
+            (data.trendOpt.layerDataViewOptions.caption?.length
+              ? data.trendOpt.layerDataViewOptions.caption
+              : data?.reqOpt?.name)
+          "
+        >
+          <div [formGroup]="trendForm" class="group border-bottom">
+            <h2>
+              {{
+                t('trend') +
+                  ': ' +
+                  (data.trendOpt.layerDataViewOptions.caption?.length
+                    ? data.trendOpt.layerDataViewOptions.caption
+                    : data?.reqOpt?.name)
+              }}
+            </h2>
+            <div class="grid-4">
+              <tlui-form-field class="form-field-padding border-bottom" tluiDirDirective>
+                <tlui-select
+                  [clearTag]="false"
+                  [floatPlaceholder]="true"
+                  [formControlName]="'lineDynamics'"
+                  [placeholder]="t('lineDynamics')"
+                >
+                  <tlui-option *ngFor="let d of chartService.lines" [value]="d">{{ d }}</tlui-option>
+                </tlui-select>
+              </tlui-form-field>
+              <tlui-form-field class="form-field-padding border-bottom" tluiDirDirective>
+                <tlui-select
+                  [clearTag]="false"
+                  [floatPlaceholder]="true"
+                  [formControlName]="'lineType'"
+                  [placeholder]="t('lineType')"
+                >
+                  <tlui-option *ngFor="let d of ['line', 'area', 'gradientArea']" [value]="d">{{ d }}</tlui-option>
+                </tlui-select>
+              </tlui-form-field>
+              <tlui-form-field class="form-field-padding border-bottom" tluiDirDirective>
+                <tlui-number-input
+                  [floatPlaceholder]="true"
+                  [formControlName]="'lineOpacity'"
+                  [max]="1"
+                  [min]="0"
+                  [placeholder]="t('lineOpacity')"
+                  size="lg"
+                >
+                </tlui-number-input>
+              </tlui-form-field>
+              <tlui-form-field class="form-field-padding border-bottom" tluiDirDirective>
+                <tlui-number-input
+                  [floatPlaceholder]="true"
+                  [formControlName]="'lineWidth'"
+                  [max]="100"
+                  [min]="1"
+                  [placeholder]="t('lineWidth')"
+                  size="lg"
+                >
+                </tlui-number-input>
+              </tlui-form-field>
+            </div>
+
+            <div class="grid">
+              <div class="column border-bottom border-right">
+                <tlui-form-field tluiDirDirective>
+                  <tlui-select
+                    [clearTag]="false"
+                    [floatPlaceholder]="true"
+                    [formControlName]="'dataPointType'"
+                    [placeholder]="t('dataPointType')"
+                  >
+                    <tlui-option *ngFor="let d of ['all', 'partial']" [value]="d">{{ t(d) }}</tlui-option>
+                  </tlui-select>
+                </tlui-form-field>
+                <div class="row row-center">
+                  <tlui-label>{{ t('dataPointColor') }}</tlui-label>
+                  <tlui-form-field class="color" tluiDirDirective>
+                    <input [formControlName]="'dataPointColor'" size="sm" tluiInput type="color" />
+                  </tlui-form-field>
+                </div>
+                <tlui-checkbox [formControlName]="'endPoint'">{{ t('endPoint') }}</tlui-checkbox>
+                <tlui-form-field tluiDirDirective>
+                  <tlui-number-input
+                    [floatPlaceholder]="true"
+                    [formControlName]="'endPointSize'"
+                    [max]="20"
+                    [min]="0"
+                    [placeholder]="t('endPointSize')"
+                    size="lg"
+                  >
+                  </tlui-number-input>
+                </tlui-form-field>
+                <tlui-form-field tluiDirDirective>
+                  <tlui-number-input
+                    [floatPlaceholder]="true"
+                    [formControlName]="'endPointStrokeSize'"
+                    [max]="20"
+                    [min]="0"
+                    [placeholder]="t('endPointStrokeSize')"
+                    size="lg"
+                  >
+                  </tlui-number-input>
+                </tlui-form-field>
+              </div>
+
+              <div class="column border-bottom border-right">
+                <tlui-checkbox [formControlName]="'breakPoint'">{{ t('breakPoint') }}</tlui-checkbox>
+                <tlui-form-field tluiDirDirective>
+                  <tlui-select
+                    [clearTag]="false"
+                    [floatPlaceholder]="true"
+                    [formControlName]="'breakPointType'"
+                    [placeholder]="t('breakPointType')"
+                  >
+                    <tlui-option *ngFor="let d of ['auto', 'config']" [value]="d">{{ t(d) }}</tlui-option>
+                  </tlui-select>
+                </tlui-form-field>
+                <div class="row row-center">
+                  <tlui-label>{{ t('breakPointColor') }}</tlui-label>
+                  <tlui-form-field class="color" tluiDirDirective>
+                    <input [formControlName]="'breakPointColor'" size="sm" tluiInput type="color" />
+                  </tlui-form-field>
+                </div>
+                <tlui-form-field tluiDirDirective>
+                  <tlui-number-input
+                    [floatPlaceholder]="true"
+                    [formControlName]="'breakPointSize'"
+                    [max]="20"
+                    [min]="0"
+                    [placeholder]="t('breakPointSize')"
+                    size="lg"
+                  >
+                  </tlui-number-input>
+                </tlui-form-field>
+                <tlui-form-field tluiDirDirective>
+                  <tlui-number-input
+                    [floatPlaceholder]="true"
+                    [formControlName]="'breakPointLimit'"
+                    [max]="1000"
+                    [min]="0"
+                    [placeholder]="t('breakPointLimit')"
+                    size="lg"
+                  >
+                  </tlui-number-input>
+                </tlui-form-field>
+                <tlui-form-field tluiDirDirective>
+                  <tlui-select
+                    [clearTag]="false"
+                    [floatPlaceholder]="true"
+                    [formControlName]="'breakPointMarker'"
+                    [placeholder]="t('breakPointMarker')"
+                  >
+                    <tlui-option
+                      *ngFor="
+                        let d of [
+                          'symbolX',
+                          'symbolXTransparentBg',
+                          'symbolArrow',
+                          'symbolCircle',
+                          'symbolCross',
+                          'symbolDiamond',
+                          'symbolSquare',
+                          'symbolStar',
+                          'symbolTriangle',
+                          'symbolWye',
+                          'none',
+                        ]
+                      "
+                      [value]="d"
+                      >{{ d }}
+                    </tlui-option>
+                  </tlui-select>
+                </tlui-form-field>
+              </div>
+
+              <div class="column border-bottom">
+                <tlui-checkbox [formControlName]="'showValues'">{{ t('showValues') }}</tlui-checkbox>
+                <tlui-checkbox [formControlName]="'reRangeThenLegendClick'"
+                  >{{ t('reRangeThenLegendClick') }}
+                </tlui-checkbox>
+                <tlui-checkbox [formControlName]="'reRangeThenDataChange'"
+                  >{{ t('reRangeThenDataChange') }}
+                </tlui-checkbox>
+                <tlui-checkbox [formControlName]="'animation'">{{ t('animation') }}</tlui-checkbox>
+                <tlui-checkbox [class.tlui-disabled]="isGroup" [formControlName]="'separateLayer'">
+                  {{ t('separateLayer') }}
+                </tlui-checkbox>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      }
+
+      @if (data?.layerOpt?.length) {
+        <ng-template [tluiAccordionItem]="t('layer')">
+          <ng-container [formGroup]="layerForm">
+            <ng-container
+              *ngFor="let group of layerFormSource?.controls; let idx = index"
+              [formArrayName]="'layerFormSource'"
+            >
+              <div [formGroupName]="idx" class="group border-bottom">
+                <h2>
+                  {{
+                    this.data.layerOpt[idx].layerName
+                      ? t('layer') + ': ' + t(this.data.layerOpt[idx].layerName)
+                      : t('layer')
+                  }}
+                </h2>
+                <div class="grid">
+                  <div [formGroupName]="'axisX'" class="column border-right border-bottom">
+                    <h3>{{ t('axisX') }}</h3>
+                    <tlui-form-field tluiDirDirective>
+                      <tlui-select
+                        [clearTag]="false"
+                        [floatPlaceholder]="true"
+                        [formControlName]="'type'"
+                        [placeholder]="t('axisType')"
+                      >
+                        <tlui-option *ngFor="let d of ['time', 'number', 'enum']" [value]="d">{{ d }}</tlui-option>
+                      </tlui-select>
+                    </tlui-form-field>
+                    <tlui-form-field tluiDirDirective>
+                      <tlui-select
+                        [clearTag]="false"
+                        [floatPlaceholder]="true"
+                        [formControlName]="'position'"
+                        [placeholder]="t('axisPosition')"
+                      >
+                        <tlui-option *ngFor="let d of ['top', 'bottom']" [value]="d">{{ d }}</tlui-option>
+                      </tlui-select>
+                    </tlui-form-field>
+                    <tlui-form-field tluiDirDirective>
+                      <tlui-number-input
+                        [floatPlaceholder]="true"
+                        [formControlName]="'ticks'"
+                        [max]="20"
+                        [min]="1"
+                        [placeholder]="t('axisTicks')"
+                        size="lg"
+                      >
+                      </tlui-number-input>
+                    </tlui-form-field>
+                    <div class="row row-center">
+                      <tlui-label>{{ t('axisColor') }}</tlui-label>
+                      <tlui-form-field class="color" tluiDirDirective>
+                        <input [formControlName]="'color'" size="sm" tluiInput type="color" />
+                      </tlui-form-field>
+                    </div>
+                    <div class="row row-center">
+                      <tlui-label>{{ t('axisTextColor') }}</tlui-label>
+                      <tlui-form-field class="color" tluiDirDirective>
+                        <input [formControlName]="'textColor'" size="sm" tluiInput type="color" />
+                      </tlui-form-field>
+                    </div>
+                    <tlui-checkbox [formControlName]="'primary'" class="tlui-disabled"
+                      >{{ t('axisPrimary') }}
+                    </tlui-checkbox>
+                  </div>
+                  <div [formGroupName]="'axisY'" class="column border-right border-bottom">
+                    <h3>{{ t('axisY') }}</h3>
+                    <tlui-form-field tluiDirDirective>
+                      <tlui-select
+                        [clearTag]="false"
+                        [floatPlaceholder]="true"
+                        [formControlName]="'type'"
+                        [placeholder]="t('axisType')"
+                      >
+                        <tlui-option *ngFor="let d of ['time', 'number']" [value]="d">{{ d }}</tlui-option>
+                      </tlui-select>
+                    </tlui-form-field>
+                    <tlui-form-field tluiDirDirective>
+                      <tlui-select
+                        [clearTag]="false"
+                        [floatPlaceholder]="true"
+                        [formControlName]="'position'"
+                        [placeholder]="t('axisPosition')"
+                      >
+                        <tlui-option *ngFor="let d of ['left', 'right']" [value]="d">{{ d }}</tlui-option>
+                      </tlui-select>
+                    </tlui-form-field>
+                    <tlui-form-field tluiDirDirective>
+                      <tlui-number-input
+                        [floatPlaceholder]="true"
+                        [formControlName]="'ticks'"
+                        [max]="20"
+                        [min]="1"
+                        [placeholder]="t('axisTicks')"
+                        size="lg"
+                      >
+                      </tlui-number-input>
+                    </tlui-form-field>
+                    <div class="row row-center">
+                      <tlui-label>{{ t('axisColor') }}</tlui-label>
+                      <tlui-form-field class="color" tluiDirDirective>
+                        <input [formControlName]="'color'" size="sm" tluiInput type="color" />
+                      </tlui-form-field>
+                    </div>
+                    <div class="row row-center">
+                      <tlui-label>{{ t('axisTextColor') }}</tlui-label>
+                      <tlui-form-field class="color" tluiDirDirective>
+                        <input [formControlName]="'textColor'" size="sm" tluiInput type="color" />
+                      </tlui-form-field>
+                    </div>
+                    <tlui-checkbox [formControlName]="'primary'" class="tlui-disabled"
+                      >{{ t('axisPrimary') }}
+                    </tlui-checkbox>
+                  </div>
+                  <div class="column border-bottom">
+                    <div [formGroupName]="'gridX'">
+                      <h3>{{ t('gridX') }}</h3>
+                      <div class="row row-center">
+                        <tlui-label>{{ t('color') }}</tlui-label>
+                        <tlui-form-field class="color" tluiDirDirective>
+                          <input [formControlName]="'color'" size="sm" tluiInput type="color" />
+                        </tlui-form-field>
+                      </div>
+                    </div>
+                    <div [formGroupName]="'gridY'">
+                      <h3>{{ t('gridY') }}</h3>
+                      <div class="row row-center">
+                        <tlui-label>{{ t('color') }}</tlui-label>
+                        <tlui-form-field class="color" tluiDirDirective>
+                          <input [formControlName]="'color'" size="sm" tluiInput type="color" />
+                        </tlui-form-field>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+        </ng-template>
+      }
+    </tlui-accordion>
+
+    @if (chartData?.length) {
+      <tlui-accordion class="accordion">
+        <ng-template [tluiAccordionItem]="t('valueList')">
+          <table style="width: 100%">
+            <thead>
+              <tr>
+                <th tluiDirDirective>{{ t('date') }}</th>
+                <th tluiDirDirective>{{ t('value') }}</th>
+              </tr>
+            </thead>
+          </table>
+
+          <cdk-virtual-scroll-viewport
+            appendOnly="true"
+            class="scroll-port"
+            itemSize="10"
+            maxBufferPx="1000"
+            minBufferPx="800"
+          >
+            <table style="width: 100%">
+              <tbody>
+                @for (row of chartData; track row) {
+                  <tr>
+                    <td tluiDirDirective>
+                      {{ row[0] | date: 'dd.MM.yyyy' }}
+                      <span> {{ row[0] | date: 'HH:mm:ss:SSS' }}</span>
+                    </td>
+                    <td [class.bad]="!row[1]" tluiDirDirective>{{ row[1] ? row[1] : 'Bad' }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </cdk-virtual-scroll-viewport>
+
+          <div class="accordion__button">
+            <button
+              (click)="onCopy()"
+              btnStyle="secondary"
+              matTooltip="{{ t('copyToBuffer') }}"
+              size="sm"
+              tluiButton
+              type="button"
+            >
+              <svg-icon class="tlui-icon--sm" src="tluiIconLinkChainClip"></svg-icon>
+            </button>
+            <button
+              (click)="onDownload()"
+              btnStyle="secondary"
+              matTooltip="{{ 'mnemo.shared.download' | transloco }}"
+              size="sm"
+              tluiButton
+              type="button"
+            >
+              <svg-icon class="tlui-icon--sm" src="tluiIconClipboardLoad"></svg-icon>
+            </button>
+          </div>
+        </ng-template>
+      </tlui-accordion>
+    }
+  </div>
+  <div class="footer">
+    <button (click)="onSave()" btnStyle="primary" size="md" tluiButton type="submit">
+      {{ 'mnemo.shared.save' | transloco }}
+    </button>
+    <button (click)="onClose()" btnStyle="secondary" size="md" tluiButton type="reset">
+      {{ 'mnemo.shared.close' | transloco }}
+    </button>
+    <button (click)="onReset()" [disabled]="true" btnStyle="secondary" size="md" tluiButton type="reset">
+      {{ 'mnemo.shared.reset' | transloco }}
+    </button>
+  </div>
+</div>

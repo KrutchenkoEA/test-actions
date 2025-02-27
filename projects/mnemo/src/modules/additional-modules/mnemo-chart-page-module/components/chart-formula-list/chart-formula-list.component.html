@@ -1,0 +1,34 @@
+<div
+  *transloco="let t; read: 'mnemo.ChartPageSelectorComponent'"
+  [ngClass]="'predictors-list_' + mnemoChartPageDataService.currentDirection"
+  class="predictors-list"
+>
+  @for (item of mnemoChartPageDataService.activeFormulaAttrMap | keyvalue; track item.key; let i = $index) {
+    <div
+      (click)="selectPredictor(item.value)"
+      [class.line-loader]="mnemoChartWrapService.chartWrapLoading$ | async"
+      [class.predictor_active]="item.value.isActive"
+      class="predictor"
+      matRipple
+      matRippleColor="var(--color-logo-50)"
+      tluiDirDirective
+    >
+      <div class="predictor__title">
+        <div [ngStyle]="{ backgroundColor: getPredictorColor(item.key) }" class="marker"></div>
+        <span matTooltip="{{ item.value.formula }}">{{ item.value.formula }}</span>
+      </div>
+      <div class="predictor__setting">
+        <button
+          (click)="openSettingPopup($event, item.value)"
+          btnStyle="tertiary"
+          class="predictor__button"
+          matTooltip="{{ t('advancedSettings') }}"
+          size="sm"
+          tluiButton
+        >
+          <svg-icon class="tlui-icon--sm" src="tluiIconSets"></svg-icon>
+        </button>
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,43 @@
+<div *transloco="let t; read: 'mnemo.ChartSettingComponent'" [formGroup]="formGroup" @popup class="container">
+  <div cdkDrag cdkDragHandle cdkDragRootElement=".cdk-overlay-pane" class="header">
+    <div class="title">{{ t('settings') }}</div>
+    <svg-icon (click)="onClose()" class="tlui-icon--sm close" src="tluiIconClose"></svg-icon>
+  </div>
+  <div class="content">
+    <tlui-checkbox formControlName="requestControl">{{ t('customRequest') }}</tlui-checkbox>
+    <tl-mnemo-request-setting-form
+      [class.tlui-disabled]="!requestControl?.value"
+      [formGroupName]="'requestForm'"
+      [isExpanded]="requestControl.value"
+    ></tl-mnemo-request-setting-form>
+    <tl-mnemo-view-setting-form
+      [formGroupName]="'viewForm'"
+      [isExpanded]="requestControl.value"
+      [isShowAutoZoom]="true"
+      [isShowExponent]="false"
+      [isShowMaxSelectedTrend]="true"
+    >
+    </tl-mnemo-view-setting-form>
+    <tl-mnemo-chart-setting-form
+      [formGroupName]="'optionsForm'"
+      [showBarSettings]="false"
+    ></tl-mnemo-chart-setting-form>
+  </div>
+  <div class="footer">
+    <button (click)="onSave()" btnStyle="primary" size="md" tluiButton type="submit">
+      {{ 'mnemo.shared.save' | transloco }}
+    </button>
+    <button (click)="onClose()" btnStyle="secondary" size="md" tluiButton type="reset">
+      {{ 'mnemo.shared.close' | transloco }}
+    </button>
+    <button (click)="onReset()" btnStyle="secondary" size="md" tluiButton type="reset">
+      {{ 'mnemo.shared.reset' | transloco }}
+    </button>
+    @if (requestForm.touched && requestForm.invalid) {
+      <div class="footer__info-container">
+        <svg-icon (click)="onClose()" class="tlui-icon--sm" src="tluiIconAlertAlarm"></svg-icon>
+        {{ t('requestFieldError') }}
+      </div>
+    }
+  </div>
+</div>

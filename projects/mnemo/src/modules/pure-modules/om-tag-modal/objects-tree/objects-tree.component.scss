@@ -1,0 +1,156 @@
+@import 'projects/shared/mnemo/mixins/shared-mixin';
+@import 'projects/shared/mnemo/mixins/scroll-mixin';
+@import 'projects/shared/mnemo/mixins/tree-line-mixin';
+
+:host {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+}
+
+.menu {
+  $menu-level: (
+    0: 0,
+    1: 0,
+    2: 1,
+    3: 2,
+    4: 3,
+    5: 4,
+    6: 5,
+    7: 6,
+    8: 7,
+    9: 8,
+    10: 9,
+  );
+
+  font-size: 12px;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+
+  ul:first-child .line-1 {
+    @include tree-line0();
+  }
+
+  ul:first-child .rtl-line-1 {
+    @include tree-rtl-line0();
+  }
+
+  @each $key, $variant in $menu-level {
+    &--level-#{$key} &--rtl-level-#{$key} {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      align-items: flex-start;
+      background: $body-background;
+    }
+
+    @if ($variant != 0) {
+      .line-#{$key} {
+        @include tree-line(#{$variant});
+      }
+      .rtl-line-#{$key} {
+        @include tree-rtl-line(#{$variant});
+      }
+    }
+  }
+}
+
+.menu-item {
+  border-bottom: 1px solid $body-background;
+  width: 100%;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &--disabled {
+    color: $font-color;
+    pointer-events: none;
+  }
+
+  &__link {
+    transition:
+      100ms background-color,
+      180ms color;
+    position: relative;
+    user-select: none;
+    display: flex;
+    height: 40px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: flex-start;
+    color: $icon-color;
+    text-decoration: none;
+    background-color: $body-background;
+    cursor: pointer;
+
+    &.system {
+      color: var(--color-logo);
+    }
+  }
+
+  &__space {
+    width: 28px;
+  }
+
+  &__icon,
+  &__cub {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__icon {
+    padding: 0 4px 0 8px;
+    position: relative;
+  }
+
+  &__text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    flex: 1;
+
+    &:hover {
+      color: $contrast-color;
+    }
+  }
+
+  &__checkbox {
+    padding: 0 4px;
+  }
+}
+
+.menu-item__text--selected {
+  color: $contrast-color;
+}
+
+.drag-image {
+  position: absolute;
+  z-index: -10;
+  width: 138px;
+  height: 108px;
+}
+
+.scroll-port {
+  height: 100%;
+
+  @include vertical-scroll();
+}
+
+.skeleton-loader {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 15px;
+  margin-left: 20px;
+  height: 100%;
+}
+
+.loading-shade {
+  @include loading-shade();
+}

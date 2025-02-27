@@ -1,0 +1,103 @@
+<form *transloco="let t; read: 'mnemo.FormulaConfigurationComponent'" [formGroup]="form" class="container">
+  <div class="header">
+    <span class="header__title">{{ t('formula') }}</span>
+    <svg-icon (click)="close()" class="header__close tlui-icon--md" src="tluiIconClose"> </svg-icon>
+  </div>
+
+  @if (!isLoading) {
+    <div class="content">
+      <div class="textarea">
+        <tlui-form-field tluiDirDirective>
+          <textarea
+            [floatPlaceholder]="true"
+            [placeholder]="t('setFormula')"
+            formControlName="formula"
+            size="lg"
+            tluiInput
+          >
+          </textarea>
+        </tlui-form-field>
+      </div>
+      <div class="options" tluiDirDirective>
+        <tlui-form-field class="selector" tluiDirDirective>
+          <tlui-select
+            [clearTag]="false"
+            [disabled]="true"
+            [floatPlaceholder]="true"
+            [language]="language$ | async"
+            [placeholder]="t('funcAgr')"
+            [searchEnabled]="true"
+            formControlName="aggregation"
+            size="xlg"
+          >
+            <tlui-option *ngFor="let opt of aggregationList" [value]="opt">{{ opt }}</tlui-option>
+          </tlui-select>
+        </tlui-form-field>
+
+        <tlui-form-field class="input" tluiDirDirective>
+          <tlui-number-input
+            [floatPlaceholder]="true"
+            [placeholder]="t('interval')"
+            formControlName="formulaInterval"
+            size="xlg"
+          ></tlui-number-input>
+        </tlui-form-field>
+      </div>
+      <div class="result" tluiDirDirective>
+        <p class="title">{{ t('result') }}</p>
+        <tlui-form-field class="selector" tluiDirDirective>
+          <tlui-select
+            [floatPlaceholder]="true"
+            [language]="language$ | async"
+            [placeholder]="t('units')"
+            [searchEnabled]="true"
+            formControlName="unitName"
+            size="xlg"
+          >
+            <tlui-option *ngFor="let unit of unitList" [value]="unit">{{ unit?.shortName }}</tlui-option>
+          </tlui-select>
+        </tlui-form-field>
+        <div>
+          <button (click)="evaluate()" btnStyle="primary" class="evaluate-button" tluiButton>
+            {{ t('evaluate') }}
+          </button>
+          <tlui-form-field [color]="isFormulaValid ? 'default' : 'error'" class="input-large" tluiDirDirective>
+            <input formControlName="evaluateResult" size="lg" tluiInput />
+            <tlui-hint *ngIf="form.get('formula').dirty && !isFormulaValid" class="error">{{
+              t('validError')
+            }}</tlui-hint>
+            <tlui-hint *ngIf="form.get('formula').dirty && !isFormulaValid && isResEmpty" class="error"
+              >&nbsp;&nbsp;&nbsp;</tlui-hint
+            >
+            <tlui-hint *ngIf="form.get('formula').dirty && isResEmpty" class="error">{{ t('resEmpty') }}</tlui-hint>
+          </tlui-form-field>
+        </div>
+      </div>
+      <div class="footer">
+        <button (click)="save()" [disabled]="form.get('formula').untouched || !isFormulaValid || isResEmpty" tluiButton>
+          {{ 'mnemo.shared.save' | transloco }}
+        </button>
+        <button (click)="close()" btnStyle="secondary" tluiButton>{{ 'mnemo.shared.cancel' | transloco }}</button>
+      </div>
+    </div>
+  } @else {
+    <div class="skeleton-loader">
+      <ngx-skeleton-loader
+        [theme]="{ width: '150px', height: '30px', backgroundColor: 'var(--color-color-6)' }"
+        appearance="line"
+      ></ngx-skeleton-loader>
+      <ngx-skeleton-loader
+        [theme]="{ width: '200px', height: '30px', backgroundColor: 'var(--color-color-6)' }"
+        appearance="line"
+      ></ngx-skeleton-loader>
+      <ngx-skeleton-loader
+        [theme]="{ width: '100px', height: '30px', backgroundColor: 'var(--color-color-6)' }"
+        appearance="line"
+      ></ngx-skeleton-loader>
+      <ngx-skeleton-loader
+        [theme]="{ width: '200px', height: '30px', backgroundColor: 'var(--color-color-6)' }"
+        appearance="line"
+      ></ngx-skeleton-loader>
+    </div>
+  }
+</form>

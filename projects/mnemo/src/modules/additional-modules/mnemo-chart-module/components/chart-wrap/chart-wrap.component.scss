@@ -1,0 +1,58 @@
+@import 'projects/shared/mnemo/mixins/shared-mixin';
+@import 'projects/shared/mnemo/mixins/popup-mixin';
+
+:host {
+  width: 100%;
+  height: 100%;
+}
+
+@include popup(100%, 100%, true);
+
+.header {
+  padding: 6px !important;
+  cursor: move;
+
+  &-flex {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    padding-left: 24px;
+    padding-right: 12px;
+
+    span {
+      color: $font-color;
+    }
+  }
+
+  .close {
+    z-index: 11;
+    cursor: pointer;
+  }
+
+  .indicator-container {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    color: var(--color-text-signatures-and-future);
+
+    .indicator {
+      cursor: help;
+
+      &_clickable {
+        color: var(--color-text-contrast);
+        cursor: pointer;
+
+        &:hover {
+          svg {
+            color: var(--color-logo);
+          }
+        }
+      }
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+}

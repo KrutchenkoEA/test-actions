@@ -1,0 +1,44 @@
+@import 'projects/shared/mnemo/mixins/shared-mixin';
+
+:host {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+::ng-deep {
+  .tl-mnemo-popover-background {
+    background: $body-background;
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.chart-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  flex: 1;
+  padding: 12px;
+  width: 100%;
+  height: 99%;
+  background: $body-background;
+
+  @include no-data();
+
+  .loading-shade {
+    @include loading-shade();
+  }
+}
+
+@media print {
+  .chart-container {
+    height: 100%;
+  }
+}

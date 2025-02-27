@@ -1,0 +1,79 @@
+<tlui-accordion
+  *transloco="let t; read: 'mnemo.MnemoRequestSettingFormComponent'"
+  [formGroup]="requestForm"
+  [multiple]="true"
+  class="accordion-container"
+>
+  <ng-template [tluiAccordionItemExpanded]="isExpanded" [tluiAccordionItem]="t('requestSettings')">
+    <div class="tab-content">
+      <div class="tab-content__item tab-content__item_wrap">
+        <tlui-checkbox
+          [class.error-color]="requestForm.touched && requestForm.invalid"
+          formControlName="realtimeRefresh"
+          size="md"
+          >{{ t('realtimeRefresh') }}
+        </tlui-checkbox>
+        <tlui-checkbox formControlName="fixedPoints" size="md">
+          <div class="tab-content__label">
+            {{ t('fixedPoints') }}
+            <svg-icon class="info" matTooltip="{{ t('fixedPointsInfo') }}" src="tluiIconQuestionCircle"></svg-icon>
+          </div>
+        </tlui-checkbox>
+      </div>
+      <hr class="tab-delimeter" />
+      <div class="tab-content__item tab-content__item_wrap">
+        <tlui-checkbox formControlName="scale" size="md">
+          {{ t('scale') }}
+          <svg-icon class="info" matTooltip="{{ t('scaleInfo') }}" src="tluiIconQuestionCircle"></svg-icon>
+        </tlui-checkbox>
+        <div class="tab-content__item">
+          <div class="tab-content__label">
+            {{ t('intervalsCount') }}
+            <svg-icon class="info" matTooltip="{{ t('intervalsCountInfo') }}" src="tluiIconQuestionCircle"></svg-icon>
+          </div>
+          <tlui-form-field class="width-270" tluiDirDirective>
+            <tlui-number-input [max]="10000" [min]="1" formControlName="intervalsCount"></tlui-number-input>
+          </tlui-form-field>
+        </div>
+      </div>
+      <hr class="tab-delimeter" />
+      <div class="tab-content__item">
+        <div class="tab-content__label">
+          {{ t('pointsCount') }}
+          <svg-icon class="info" matTooltip="{{ t('pointsCountInfo') }}" src="tluiIconQuestionCircle"></svg-icon>
+        </div>
+        <tlui-form-field class="width-270" tluiDirDirective>
+          <tlui-number-input [min]="0" formControlName="points"></tlui-number-input>
+        </tlui-form-field>
+      </div>
+      <div class="tab-content__item">
+        <div [class.error-color]="requestForm.touched && requestForm.invalid" class="tab-content__label">
+          {{ t('selectPeriod') }}
+          <svg-icon class="info" matTooltip="{{ t('selectPeriodInfo') }}" src="tluiIconQuestionCircle"></svg-icon>
+        </div>
+        <tlui-form-field class="width-270" tluiDirDirective>
+          <tlui-date-range-picker
+            (keyup)="onKeyboardClick($event)"
+            (onClosed)="onCalendarClose()"
+            [closeOnSelect]="true"
+            [date]="true"
+            [disableSelectPrevDay]="false"
+            [iconPosition]="'right'"
+            [language]="language$ | async"
+            [time]="true"
+            formControlName="date"
+          ></tlui-date-range-picker>
+        </tlui-form-field>
+      </div>
+      <div class="tab-content__item">
+        <div class="tab-content__label">
+          {{ t('hoursPeriod') }}
+          <svg-icon class="info" matTooltip="{{ t('hoursPeriodInfo') }}" src="tluiIconQuestionCircle"></svg-icon>
+        </div>
+        <tlui-form-field class="width-270" tluiDirDirective>
+          <tlui-number-input [max]="24" [min]="1" formControlName="hoursPeriod"></tlui-number-input>
+        </tlui-form-field>
+      </div>
+    </div>
+  </ng-template>
+</tlui-accordion>
