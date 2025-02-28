@@ -2,16 +2,16 @@
 import { inject, Injectable } from '@angular/core';
 import { skip, Subject, Subscription, throttleTime } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { MnemoServiceAbstract } from '../abstract';
 import { PlayerModeService } from '../player-services';
 import { ViewerFormulaService } from './viewer-formula.service';
 import { ViewerOMService } from './viewer-om.service';
 import { ViewerRefreshService } from './viewer-refresh.service';
 import { ViewerTagService } from './viewer-tag.service';
 import { ViewerService } from './viewer.service';
+import { IMnemoUnsubscribed } from '../../../../models';
 
 @Injectable()
-export class ViewerIntervalService implements MnemoServiceAbstract {
+export class ViewerIntervalService implements IMnemoUnsubscribed {
   public viewerService = inject(ViewerService);
   private readonly viewerTagService = inject(ViewerTagService);
   private readonly viewerOMService = inject(ViewerOMService);
@@ -19,7 +19,7 @@ export class ViewerIntervalService implements MnemoServiceAbstract {
   private readonly viewerRefreshService = inject(ViewerRefreshService);
   private readonly playerModeService = inject(PlayerModeService);
 
-  public subscriptions?: Subscription[] = [];
+  public subscriptions: Subscription[] = [];
 
   public customRefreshTime: number = 30000;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -29,7 +29,7 @@ export class ViewerIntervalService implements MnemoServiceAbstract {
 
   public intervalTicks$: Subject<null> = new Subject<null>();
 
-  public initSubscribe(): void {
+  public initSubs(): void {
     if (
       this.viewerService.mnemoViewerType === 'ws' &&
       (this.viewerTagService.isTagsInit$.value || this.viewerTagService.isTagsInitActiveShapes$.value)
@@ -93,7 +93,7 @@ export class ViewerIntervalService implements MnemoServiceAbstract {
     this.subscriptions.push(playerModeSub$);
   }
 
-  public destroy(): void {
+  public destroySubs(): void {
     this.subscriptions?.forEach((sub) => sub.unsubscribe());
     this.subscriptions = [];
   }

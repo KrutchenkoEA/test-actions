@@ -7,10 +7,10 @@ import { Subscription, take } from 'rxjs';
 import { mx } from '../../../../../config/mxObject';
 import { DARK_THEME, LIGHT_THEME } from '../../../../../consts';
 import { ViewerService } from '../../../../pure-modules';
-import { MnemoAbstractClass } from './mnemo-abstract-class';
+import { MnemoGraphAbstract, IMnemoUnsubscribed } from '../../../../../models';
 
 @Injectable()
-export class MnemoToolsService implements MnemoAbstractClass {
+export class MnemoToolsService implements MnemoGraphAbstract, IMnemoUnsubscribed {
   public viewerService = inject(ViewerService);
   public themeService = inject(ThemeConfiguratorService);
 
@@ -32,10 +32,14 @@ export class MnemoToolsService implements MnemoAbstractClass {
   public init(graph: mxGraph): void {
     this.graph = graph;
 
-    this.initSubscribe();
+    this.initSubs();
   }
 
-  public initSubscribe(): void {
+  public destroy(): void {
+    this.destroySubs();
+  }
+
+  public initSubs(): void {
     const buttonSub$ = this.viewerService.toolbarButtonEmit$.subscribe((type) => {
       switch (type) {
         case 'zoomIn':
@@ -64,7 +68,7 @@ export class MnemoToolsService implements MnemoAbstractClass {
     this.subscriptions.push(tabSub$);
   }
 
-  public destroy(): void {
+  public destroySubs(): void {
     this.subscriptions?.forEach((sub) => sub.unsubscribe());
     this.subscriptions = [];
   }
@@ -138,7 +142,7 @@ export class MnemoToolsService implements MnemoAbstractClass {
       yCenter,
       null,
       `${this.viewerService.selectedNodeName$?.value} ${new Date().toLocaleString()}`,
-      true
+      true,
     );
 
     const style: string =

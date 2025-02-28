@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, debounceTime, filter, forkJoin, Subscription } from 'rxjs';
-import { IOMAttributeAll, IOMAttributeValues, IUTTableCellData } from '../../../../../../models';
+import { IMnemoUnsubscribed, IOMAttributeAll, IOMAttributeValues, IUTTableCellData } from '../../../../../../models';
 import { RtdbOmApiService } from '../../../../../../services';
 import {
   PlayerModeService,
@@ -11,11 +11,10 @@ import {
   ViewerService,
 } from '../../../../../pure-modules';
 import { UtvDataRefService } from '../utv-data-ref.service';
-import { UtvValueAbstractClass } from '../utv-value-abstract.class';
 import { UtvValueApplyService } from './utv-value-apply.service';
 
 @Injectable()
-export class UtvOmValueService implements UtvValueAbstractClass {
+export class UtvOmValueService implements IMnemoUnsubscribed {
   public utvDataRefService = inject(UtvDataRefService);
   public viewerService = inject(ViewerService);
   private readonly playerModeService = inject(PlayerModeService);
@@ -30,9 +29,7 @@ export class UtvOmValueService implements UtvValueAbstractClass {
   public update$: BehaviorSubject<IOMAttributeAll[]> = new BehaviorSubject<IOMAttributeAll[]>([]);
   public updateRounded$: BehaviorSubject<IOMAttributeAll[]> = new BehaviorSubject<IOMAttributeAll[]>([]);
 
-  public init(): void {}
-
-  public initSubscribe(): void {
+  public initSubs(): void {
     const intervalSub$ = this.viewerIntervalService.intervalTicks$
       .pipe(filter(() => !this.playerModeService.isPlayerMode && this.viewerOMService.omAttrInit$.value))
       .subscribe(() => {
@@ -54,7 +51,7 @@ export class UtvOmValueService implements UtvValueAbstractClass {
     this.subscriptions.push(playerSub$);
   }
 
-  public destroy(): void {
+  public destroySubs(): void {
     this.viewerOMService.cleanData();
     this.subscriptions?.forEach((sub) => sub.unsubscribe());
     this.subscriptions = [];
@@ -66,7 +63,7 @@ export class UtvOmValueService implements UtvValueAbstractClass {
 
     if (defaultMap.size) {
       forkJoin(
-        Array.from(defaultMap.keys()).map((elementId) => this.rtdbOmApiService.getOMAttributeAll(elementId, false))
+        Array.from(defaultMap.keys()).map((elementId) => this.rtdbOmApiService.getOMAttributeAll(elementId, false)),
       ).subscribe((attr) => {
         attr?.forEach((d) => {
           const dataMap = this.viewerOMService.omAttrMapData.get('default').get(d.id);
@@ -84,7 +81,7 @@ export class UtvOmValueService implements UtvValueAbstractClass {
 
     if (roundedMap.size) {
       forkJoin(
-        Array.from(roundedMap.keys()).map((elementId) => this.rtdbOmApiService.getOMAttributeAll(elementId, true))
+        Array.from(roundedMap.keys()).map((elementId) => this.rtdbOmApiService.getOMAttributeAll(elementId, true)),
       ).subscribe((attrWithFormat) => {
         attrWithFormat?.forEach((d) => {
           const dataMap = this.viewerOMService.omAttrMapData.get('default').get(d.id);

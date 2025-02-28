@@ -9,7 +9,7 @@ export class UtvDataRefService extends UtTlDataRefService {
     super();
   }
 
-  public init(): void {
+  public override init(): void {
     super.init();
   }
 }

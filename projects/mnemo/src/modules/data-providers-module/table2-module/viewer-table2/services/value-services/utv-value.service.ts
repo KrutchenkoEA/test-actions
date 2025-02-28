@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { inject, Injectable } from '@angular/core';
-import { IUTTableCellData, IUTTableCellDataCustom, IViewerTag } from '../../../../../../models';
+import { IMnemoUnsubscribed, IUTTableCellData, IUTTableCellDataCustom, IViewerTag } from '../../../../../../models';
 import {
   ViewerFormulaService,
   ViewerIntervalService,
@@ -10,14 +10,13 @@ import {
 } from '../../../../../pure-modules';
 import { UtTlCellDataService } from '../../../components/univer-table-tl';
 import { UtvDataRefService } from '../utv-data-ref.service';
-import { UtvValueAbstractClass } from '../utv-value-abstract.class';
 import { UtvFormulaValueService } from './utv-formula-value.service';
 import { UtvOmValueService } from './utv-om-value.service';
 import { UtvTagValueService } from './utv-tag-value.service';
 import { UtvValueApplyService } from './utv-value-apply.service';
 
 @Injectable()
-export class UtvValueService implements UtvValueAbstractClass {
+export class UtvValueService implements Partial<IMnemoUnsubscribed> {
   private readonly utvDataRefService = inject(UtvDataRefService);
   private readonly viewerIntervalService = inject(ViewerIntervalService);
   private readonly viewerTagService = inject(ViewerTagService);
@@ -99,34 +98,32 @@ export class UtvValueService implements UtvValueAbstractClass {
     this.viewerFormulaService.formulaInit$.next(!!formulaCellsMap.size);
     this.viewerFormulaService.formulaCellsTableMap$.next(formulaCellsMap);
 
-    this.initSubscribe();
+    this.initSubs();
   }
 
-  public init(): void {}
-
-  public initSubscribe(): void {
-    this.viewerIntervalService.initSubscribe();
+  public initSubs(): void {
+    this.viewerIntervalService.initSubs();
 
     if (this.viewerTagService.isTagsInit$.value) {
-      this.utvTagService.initSubscribe();
+      this.utvTagService.initSubs();
     }
 
     if (this.viewerOMService.omAttrInit$.value) {
-      this.utvOmService.initSubscribe();
+      this.utvOmService.initSubs();
     }
 
     if (this.viewerFormulaService.formulaInit$.value) {
-      this.utvFormulaService.initSubscribe();
+      this.utvFormulaService.initSubs();
     }
 
     this.utvValueApplyService.setBlinkInterval(true);
   }
 
-  public destroy(): void {
+  public destroySubs(): void {
     this.viewerRefreshService.stopUpdate();
-    this.utvValueApplyService.destroy();
-    this.utvTagService.destroy();
-    this.utvOmService.destroy();
-    this.utvFormulaService.destroy();
+    this.utvValueApplyService.destroySubs();
+    this.utvTagService.destroySubs();
+    this.utvOmService.destroySubs();
+    this.utvFormulaService.destroySubs();
   }
 }

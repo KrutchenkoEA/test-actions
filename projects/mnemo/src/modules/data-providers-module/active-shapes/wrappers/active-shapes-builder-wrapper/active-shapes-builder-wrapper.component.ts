@@ -31,7 +31,7 @@ export class ActiveShapesBuilderWrapperComponent
   extends ActiveShapesWrapperDirective
   implements OnInit, ActiveShapesWrapperAbstract
 {
-  public injector = inject(Injector);
+  public override injector = inject(Injector);
   private readonly activeShapesDataCreatorService = inject(ActiveShapesDataCreatorService);
 
   @Input() public item: IDashboardItem | null = null;

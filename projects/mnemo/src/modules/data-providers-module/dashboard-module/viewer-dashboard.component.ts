@@ -90,7 +90,7 @@ import {
 export class ViewerDashboardComponent extends ActiveShapesWrapperDirective implements OnInit, OnDestroy {
   private readonly store = inject<StoreService>(STORE_GLOBAL);
   private readonly dates$ = inject<StoreObservable<IDatesInterval>>(DATES_GLOBAL$);
-  public injector = inject(Injector);
+  public override injector = inject(Injector);
   private readonly viewerService = inject(ViewerService);
   public activeShapesRawService = inject(ActiveShapesRawService);
   public activeShapesTagService = inject(ActiveShapesTagService);

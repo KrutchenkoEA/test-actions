@@ -74,7 +74,7 @@ export class ActiveShapesMnemoWrapperComponent
   extends ActiveShapesWrapperDirective
   implements OnInit, ActiveShapesWrapperAbstract
 {
-  public injector = inject(Injector);
+  public override injector = inject(Injector);
   private readonly popupService = inject(PopupService);
   private readonly activeShapesDataCreatorService = inject(ActiveShapesDataCreatorService);
   private readonly activeShapesWrapperService = inject(ActiveShapesWrapperService);
@@ -102,7 +102,7 @@ export class ActiveShapesMnemoWrapperComponent
       this.activeShapesWrapperService.item = this.item;
 
       if (!this.exampleView) {
-        this.activeShapesWrapperService.initSubscribe();
+        this.activeShapesWrapperService.initSubs();
       }
       return;
     }

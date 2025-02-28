@@ -31,11 +31,10 @@ export class ActiveShapesOmService implements ActiveShapesAbstractClass<IOMAttri
 
   public ngOnDestroy(): void {
     this.viewerOMService.cleanData();
-    this.subscriptions?.forEach((sub) => sub.unsubscribe());
-    this.subscriptions = [];
+    this.destroySubs();
   }
 
-  public initSubscribe(): void {
+  public initSubs(): void {
     const intervalSub$ = this.viewerIntervalService.intervalTicks$
       .pipe(
         skip(1),
@@ -49,6 +48,11 @@ export class ActiveShapesOmService implements ActiveShapesAbstractClass<IOMAttri
       );
 
     this.subscriptions.push(intervalSub$);
+  }
+
+  public destroySubs(): void {
+    this.subscriptions?.forEach((sub) => sub.unsubscribe());
+    this.subscriptions = [];
   }
 
   public getHistoryData(start: Date, end: Date): void {

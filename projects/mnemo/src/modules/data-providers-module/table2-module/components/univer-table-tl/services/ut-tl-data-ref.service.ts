@@ -3,10 +3,10 @@ import { Injectable } from '@angular/core';
 import { FUniver, IWorkbookData, Nullable, Univer, UniverInstanceType, Workbook, Worksheet } from '@univerjs/core';
 import { FSelection, FWorkbook, FWorksheet } from '@univerjs/facade';
 import { ISelectionWithStyle } from '@univerjs/sheets';
-import { IFUniverSheetsMixin } from '@univerjs/sheets/lib/types/facade';
 import { DEFAULT_WORKBOOK_DATA } from '../const';
 import '@univerjs/sheets/facade';
 import '@univerjs/sheets-ui/facade';
+import { IFUniverSheetsMixin } from '@univerjs/sheets/facade';
 
 @Injectable()
 export class UtTlDataRefService {

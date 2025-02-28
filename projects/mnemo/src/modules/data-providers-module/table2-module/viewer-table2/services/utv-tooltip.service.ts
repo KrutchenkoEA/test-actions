@@ -2,7 +2,7 @@
 import { inject, Injectable } from '@angular/core';
 import { IHoverCellPosition } from '@univerjs/sheets-ui';
 import { BehaviorSubject, debounceTime, Subscription } from 'rxjs';
-import { IUTTableCellDataCustom } from '../../../../../models';
+import { IMnemoUnsubscribed, IUTTableCellDataCustom } from '../../../../../models';
 import {
   TooltipTemplateService,
   ViewerFormulaService,
@@ -11,10 +11,9 @@ import {
 } from '../../../../pure-modules';
 import { UtTlCellDataService } from '../../components/univer-table-tl';
 import { UtvDataRefService } from './utv-data-ref.service';
-import { UtvValueAbstractClass } from './utv-value-abstract.class';
 
 @Injectable()
-export class UtvTooltipService implements UtvValueAbstractClass {
+export class UtvTooltipService implements IMnemoUnsubscribed {
   private readonly utvDataRefService = inject(UtvDataRefService);
   private readonly uttlCellDataService = inject(UtTlCellDataService);
   private readonly tooltipTemplateService = inject(TooltipTemplateService);
@@ -31,15 +30,11 @@ export class UtvTooltipService implements UtvValueAbstractClass {
     ci: number;
   }> = new BehaviorSubject(null);
 
-  public init(): void {
+  public initSubs(): void {
     this.utvDataRefService.univerAPI
       .getSheetHooks()
       .onCellPointerMove((cell) => this.cell$.next(cell as IHoverCellPosition));
 
-    this.initSubscribe();
-  }
-
-  public initSubscribe(): void {
     const cellSub$ = this.cell$.pipe(debounceTime(100)).subscribe((cell) => {
       if (!cell?.location) {
         this.tooltipPosition$.next(null);
@@ -56,7 +51,7 @@ export class UtvTooltipService implements UtvValueAbstractClass {
     this.subscriptions.push(cellSub$);
   }
 
-  public destroy(): void {
+  public destroySubs(): void {
     this.subscriptions?.forEach((sub) => sub.unsubscribe());
     this.subscriptions = [];
   }
@@ -86,7 +81,7 @@ export class UtvTooltipService implements UtvValueAbstractClass {
           cell.v as string,
           data?.tagName,
           new Date(data?.timeStamp),
-          data?.status as number
+          data?.status as number,
         );
         break;
       case 'omAttr':
@@ -95,7 +90,7 @@ export class UtvTooltipService implements UtvValueAbstractClass {
           cell.v as string,
           `${data?.attrParentPath} | ${data?.attrName}`,
           new Date(data?.timeStamp),
-          data?.status as number
+          data?.status as number,
         );
         break;
       case 'formula':
@@ -104,7 +99,7 @@ export class UtvTooltipService implements UtvValueAbstractClass {
           cell.v as string,
           data?.formula,
           new Date(data?.timeStamp),
-          data?.formulaValid
+          data?.formulaValid,
         );
         break;
       default:

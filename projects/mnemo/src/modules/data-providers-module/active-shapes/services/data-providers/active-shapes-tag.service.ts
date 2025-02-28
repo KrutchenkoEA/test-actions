@@ -3,8 +3,12 @@ import { inject, Injectable, OnDestroy } from '@angular/core';
 import { uuidGenerate } from '@tl-platform/core';
 import { skip, Subscription } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import { IMnemoChartDateOptions, ITagHistoryData, ITagsValues } from '../../../../../models';
-import { ActiveShapesAbstractClass } from '../../../../../models';
+import {
+  ActiveShapesAbstractClass,
+  IMnemoChartDateOptions,
+  ITagHistoryData,
+  ITagsValues,
+} from '../../../../../models';
 import { MnemoLoggerService, RtdbTagApiService } from '../../../../../services';
 import { ViewerIntervalService, ViewerMapperService, ViewerService, ViewerTagService } from '../../../../pure-modules';
 import { ActiveShapesRealtimeService } from './active-shapes-realtime.service';
@@ -28,24 +32,28 @@ export class ActiveShapesTagService implements ActiveShapesAbstractClass<ITagsVa
 
   public ngOnDestroy(): void {
     this.viewerTagService.cleanData();
-    this.subscriptions?.forEach((sub) => sub.unsubscribe());
-    this.subscriptions = [];
+    this.destroySubs();
   }
 
-  public initSubscribe(): void {
+  public initSubs(): void {
     const intervalSub$ = this.viewerIntervalService.intervalTicks$
       .pipe(
         skip(1),
-        filter(() => this.updateEnabled && this.viewerTagService.isTagsInitActiveShapes$.value)
+        filter(() => this.updateEnabled && this.viewerTagService.isTagsInitActiveShapes$.value),
       )
       .subscribe(() => {
         this.getHistoryData(
           this.lastUpdateDate?.end ?? new Date(new Date().setSeconds(new Date().getSeconds() - 30)),
-          new Date()
+          new Date(),
         );
       });
 
     this.subscriptions.push(intervalSub$);
+  }
+
+  public destroySubs(): void {
+    this.subscriptions?.forEach((sub) => sub.unsubscribe());
+    this.subscriptions = [];
   }
 
   public getHistoryData(start: Date, end: Date, scale?: boolean, intervalsCount?: number): void {

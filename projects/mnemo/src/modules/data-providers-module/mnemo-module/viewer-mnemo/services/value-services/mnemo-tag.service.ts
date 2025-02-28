@@ -1,9 +1,16 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { ElementRef, Injectable, inject } from '@angular/core';
+import { ElementRef, inject, Injectable } from '@angular/core';
 import { mxCell, mxGraph } from 'mxgraph';
 import { forkJoin, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { IMnemoEvent, ITagsValues, ShapeTypeEnum, ViewElementTypeEnum } from '../../../../../../models';
+import {
+  IMnemoEvent,
+  IMnemoUnsubscribed,
+  ITagsValues,
+  MnemoGraphAbstract,
+  ShapeTypeEnum,
+  ViewElementTypeEnum,
+} from '../../../../../../models';
 import { RtdbTagApiService } from '../../../../../../services';
 import {
   PlayerModeService,
@@ -13,12 +20,11 @@ import {
   ViewerTagService,
 } from '../../../../../pure-modules';
 import { MnemoRuleService } from '../mnemo-rule.service';
-import { MnemoAbstractClass } from '../mnemo-abstract-class';
 import { MnemoValueApplyService } from './mnemo-value-apply.service';
 
 @Injectable()
-export class MnemoTagService implements MnemoAbstractClass {
-  viewerService = inject(ViewerService);
+export class MnemoTagService implements MnemoGraphAbstract, IMnemoUnsubscribed {
+  public viewerService = inject(ViewerService);
   private readonly playerModeService = inject(PlayerModeService);
   private readonly viewerIntervalService = inject(ViewerIntervalService);
   private readonly viewerHelperService = inject(ViewerHelperService);
@@ -36,7 +42,7 @@ export class MnemoTagService implements MnemoAbstractClass {
     this.graphContainer = graphContainer;
   }
 
-  public initSubscribe(): void {
+  public initSubs(): void {
     if (this.viewerService.mnemoViewerType === 'rest') {
       const intervalSub$ = this.viewerIntervalService.intervalTicks$
         .pipe(filter(() => !this.playerModeService.isPlayerMode && this.viewerTagService.isTagsInit$.value))
@@ -67,6 +73,10 @@ export class MnemoTagService implements MnemoAbstractClass {
 
   public destroy(): void {
     this.viewerTagService.cleanData();
+    this.destroySubs();
+  }
+
+  public destroySubs(): void {
     this.subscriptions?.forEach((sub) => sub.unsubscribe());
     this.subscriptions = [];
   }
@@ -84,7 +94,7 @@ export class MnemoTagService implements MnemoAbstractClass {
             v.withFormat = true;
           });
           return tagValues;
-        })
+        }),
       ),
     ]).subscribe(([tagValues, tagValues2]) => {
       this.viewerTagService.updateTagData$.next([...tagValues, ...tagValues2]);
@@ -140,7 +150,7 @@ export class MnemoTagService implements MnemoAbstractClass {
           cell,
           dataObj.val,
           status,
-          cell.roundValue ? dataObj.val?.toString() : null
+          cell.roundValue ? dataObj.val?.toString() : null,
         );
       } else if (
         cell.cellType === ShapeTypeEnum.ActiveElement &&

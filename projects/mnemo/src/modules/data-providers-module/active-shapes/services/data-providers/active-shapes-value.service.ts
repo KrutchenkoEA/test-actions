@@ -6,7 +6,7 @@ import {
   IDashboardItem,
   IDataMappingOptions,
   IFormulaData,
-  IMnemoSubModel,
+  IMnemoUnsubscribed,
   IOmCellObject,
   IViewerTag,
 } from '../../../../../models';
@@ -24,7 +24,7 @@ import { ActiveShapesTagService } from './active-shapes-tag.service';
 import { ActiveShapesService } from './active-shapes.service';
 
 @Injectable()
-export class ActiveShapesValueService implements IMnemoSubModel, OnDestroy {
+export class ActiveShapesValueService implements IMnemoUnsubscribed, OnDestroy {
   private readonly activeShapesService = inject(ActiveShapesService);
   private readonly activeShapesRealtimeService = inject(ActiveShapesRealtimeService);
   private readonly activeShapesTagService = inject(ActiveShapesTagService);
@@ -42,9 +42,38 @@ export class ActiveShapesValueService implements IMnemoSubModel, OnDestroy {
   public ngOnDestroy(): void {
     if (this.isNeedInit) {
       this.viewerRefreshService.stopUpdate();
-      this.viewerIntervalService.destroy();
+      this.viewerIntervalService.destroySubs();
+    }
+    this.destroySubs();
+  }
+
+  public initSubs(): void {
+    if (this.isNeedInit) {
+      this.viewerIntervalService.initSubs();
     }
 
+    if (this.viewerTagService.isTagsInitActiveShapes$.value) {
+      this.activeShapesTagService.initSubs();
+    }
+
+    if (this.viewerOMService.omAttrInitActiveShapes$.value) {
+      this.activeShapesOmService.initSubs();
+    }
+
+    if (this.viewerFormulaService.formulaInitActiveShapes$.value) {
+      this.activeShapesFormulaService.initSubs();
+    }
+
+    const intervalSub$ = this.viewerIntervalService.intervalTicks$
+      .pipe(filter(() => this.activeShapesService.currentTime === 'day'))
+      .subscribe(() => {
+        this.activeShapesRealtimeService.nextRealtimeData();
+      });
+
+    this.subscriptions.push(intervalSub$);
+  }
+
+  public destroySubs(): void {
     this.subscriptions?.forEach((sub) => sub.unsubscribe());
     this.subscriptions = [];
   }
@@ -101,32 +130,6 @@ export class ActiveShapesValueService implements IMnemoSubModel, OnDestroy {
     this.viewerOMService.omSetActiveShapes$.next(omCellsSet);
     this.viewerFormulaService.formulaInitActiveShapes$.next(!!formulaCellsSet.size);
     this.viewerFormulaService.formulaSetActiveShapes$.next(formulaCellsSet);
-    this.initSubscribe();
-  }
-
-  public initSubscribe(): void {
-    if (this.isNeedInit) {
-      this.viewerIntervalService.initSubscribe();
-    }
-
-    if (this.viewerTagService.isTagsInitActiveShapes$.value) {
-      this.activeShapesTagService.initSubscribe();
-    }
-
-    if (this.viewerOMService.omAttrInitActiveShapes$.value) {
-      this.activeShapesOmService.initSubscribe();
-    }
-
-    if (this.viewerFormulaService.formulaInitActiveShapes$.value) {
-      this.activeShapesFormulaService.initSubscribe();
-    }
-
-    const intervalSub$ = this.viewerIntervalService.intervalTicks$
-      .pipe(filter(() => this.activeShapesService.currentTime === 'day'))
-      .subscribe(() => {
-        this.activeShapesRealtimeService.nextRealtimeData();
-      });
-
-    this.subscriptions.push(intervalSub$);
+    this.initSubs();
   }
 }

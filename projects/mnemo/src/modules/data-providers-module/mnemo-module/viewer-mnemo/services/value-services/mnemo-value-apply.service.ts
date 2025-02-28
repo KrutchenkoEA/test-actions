@@ -1,14 +1,13 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { mxCell, mxGraph } from 'mxgraph';
 import { mx } from '../../../../../../config/mxObject';
-import { StatusType } from '../../../../../../models';
+import { MnemoGraphAbstract, StatusType } from '../../../../../../models';
 import { ViewerHelperService, ViewerService } from '../../../../../pure-modules';
-import { MnemoRuleService, IStyleAndValue } from '../mnemo-rule.service';
-import { MnemoAbstractClass } from '../mnemo-abstract-class';
+import { IStyleAndValue, MnemoRuleService } from '../mnemo-rule.service';
 
 @Injectable()
-export class MnemoValueApplyService implements MnemoAbstractClass {
+export class MnemoValueApplyService implements MnemoGraphAbstract {
   private readonly viewerService = inject(ViewerService);
   private readonly viewerHelperService = inject(ViewerHelperService);
   private readonly graphRuleService = inject(MnemoRuleService);
@@ -19,19 +18,13 @@ export class MnemoValueApplyService implements MnemoAbstractClass {
   public blinkRef: any = null;
   public blinkDelay: number = 1 * 1000; // мс
   public isNeedRefresh: boolean = true;
-  private readonly baseUrl: string = '';
+  private readonly baseUrl: string = this.viewerService.baseUrl;
 
   private readonly blinkCellsMap: Map<string, mxCell> = new Map<string, mxCell>();
-
-  constructor() {
-    this.baseUrl = this.viewerService.baseUrl;
-  }
 
   public init(graph: mxGraph): void {
     this.graph = graph;
   }
-
-  public initSubscribe(): void {}
 
   public destroy(): void {
     this.clearBlinkInterval();
@@ -41,7 +34,7 @@ export class MnemoValueApplyService implements MnemoAbstractClass {
     cell: mxCell,
     value: number = 0,
     status: StatusType = '',
-    stringValue: string = null
+    stringValue: string = null,
   ): void {
     let resultRules: IStyleAndValue;
     if (cell.tagRules) {
@@ -61,7 +54,7 @@ export class MnemoValueApplyService implements MnemoAbstractClass {
         cell.tagRules,
         status,
         cell.cellType,
-        cell.tagDefStyle
+        cell.tagDefStyle,
       );
       cell.setStyle(resultRules?.style);
     }
@@ -111,7 +104,7 @@ export class MnemoValueApplyService implements MnemoAbstractClass {
         new mx.mxImage(`${this.baseUrl}assets/deviation.svg`, 12, 12),
         `${this.viewerHelperService.getTranslate('incorrectTimeStamp')}`,
         'end',
-        'top'
+        'top',
       );
       this.graph.addCellOverlay(cell, overlay);
     }

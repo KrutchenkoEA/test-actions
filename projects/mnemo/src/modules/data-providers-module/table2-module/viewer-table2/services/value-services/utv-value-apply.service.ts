@@ -2,13 +2,12 @@
 import { inject, Injectable } from '@angular/core';
 import { IStyleData } from '@univerjs/core';
 import { mxGraph } from 'mxgraph';
-import { IUTTableCellData, StatusType } from '../../../../../../models';
+import { IMnemoUnsubscribed, IUTTableCellData, StatusType } from '../../../../../../models';
 import { UtTlCellDataService } from '../../../components/univer-table-tl';
 import { IStyleAndValueTable2, UtvRuleService } from '../utv-rule.service';
-import { UtvValueAbstractClass } from '../utv-value-abstract.class';
 
 @Injectable()
-export class UtvValueApplyService implements UtvValueAbstractClass {
+export class UtvValueApplyService implements Partial<IMnemoUnsubscribed> {
   private readonly uttlCellDataService = inject(UtTlCellDataService);
   private readonly utvRuleService = inject(UtvRuleService);
 
@@ -17,15 +16,10 @@ export class UtvValueApplyService implements UtvValueAbstractClass {
   public blinkRef: any = null;
   public blinkDelay: number = 1 * 1000; // мс
   public isNeedRefresh: boolean = true;
-  private readonly baseUrl: string = '';
 
   private readonly blinkCellsMap: Map<string, IUTTableCellData> = new Map<string, IUTTableCellData>();
 
-  public init(): void {}
-
-  public initSubscribe(): void {}
-
-  public destroy(): void {
+  public destroySubs(): void {
     this.clearBlinkInterval();
   }
 
@@ -50,7 +44,7 @@ export class UtvValueApplyService implements UtvValueAbstractClass {
         value,
         cellObject.tagRules,
         status,
-        cellObject.tagDefStyle
+        cellObject.tagDefStyle,
       );
     }
 
@@ -81,7 +75,7 @@ export class UtvValueApplyService implements UtvValueAbstractClass {
     this.applyCellValue(
       cell,
       (resultRules?.value ?? value) + (cell?.custom?.unitName ? ` ${cell?.custom?.unitName}` : ''),
-      status
+      status,
     );
   }
 
@@ -100,7 +94,8 @@ export class UtvValueApplyService implements UtvValueAbstractClass {
     }
   }
 
-  public addErrorIcon(): void {}
+  public addErrorIcon(): void {
+  }
 
   public setBlinkInterval(isFirst: boolean = false): void {
     if (isFirst) {
@@ -115,7 +110,7 @@ export class UtvValueApplyService implements UtvValueAbstractClass {
             this.uttlCellDataService.setCellData(
               cell.custom.ri,
               cell.custom.ci,
-              cell?.custom?.visible ? cell.custom.hiddenValue : ''
+              cell?.custom?.visible ? cell.custom.hiddenValue : '',
             );
           }
         });

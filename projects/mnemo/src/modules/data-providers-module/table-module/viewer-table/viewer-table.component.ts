@@ -425,7 +425,7 @@ export class ViewerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     ].sort();
 
     this.viewerTagService.tagsNames$.next(nameArr);
-    this.viewerIntervalService.initSubscribe();
+    this.viewerIntervalService.initSubs();
 
     if (!nameArr?.length) {
       this.viewerFormulaService.formulaInit$.next(true);

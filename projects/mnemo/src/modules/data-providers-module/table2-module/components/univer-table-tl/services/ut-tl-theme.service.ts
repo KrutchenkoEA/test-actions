@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { Injectable } from '@angular/core';
 import { FUniver } from '@univerjs/core';
-import { IFUniverSheetsUIMixin } from '@univerjs/sheets-ui/lib/types/facade';
+import { IFUniverSheetsUIMixin } from '@univerjs/sheets-ui/facade';
 
 @Injectable()
 export class UtTlThemeService<U extends { univerAPI: FUniver }> {

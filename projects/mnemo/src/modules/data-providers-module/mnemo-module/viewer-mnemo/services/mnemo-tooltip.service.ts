@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { inject, Injectable } from '@angular/core';
 import { mxCell, mxGraph, mxPopupMenuHandler } from 'mxgraph';
-import { IFormulaData, ShapeTypeEnum, SourceType } from '../../../../../models';
+import { IFormulaData, MnemoGraphAbstract, ShapeTypeEnum, SourceType } from '../../../../../models';
 import {
   TooltipTemplateService,
   ViewerFormulaService,
@@ -13,7 +13,7 @@ import {
 import { MnemoPopupChartService } from '../../../../additional-modules';
 
 @Injectable()
-export class MnemoTooltipService {
+export class MnemoTooltipService implements MnemoGraphAbstract {
   private readonly viewerService = inject(ViewerService);
   private readonly viewerHelperService = inject(ViewerHelperService);
   private readonly tooltipTemplateService = inject(TooltipTemplateService);
@@ -28,6 +28,9 @@ export class MnemoTooltipService {
     this.graph = graph;
 
     this.setHandlers();
+  }
+
+  public destroy(): void {
   }
 
   public setHandlers(): void {

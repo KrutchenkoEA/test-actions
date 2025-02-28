@@ -1,4 +1,4 @@
-import { IVCDataOptions, IVCLineData } from '../../../../models/charts';
+import { IVCDataOptions, IVCLineData } from '../../../../models';
 import { ChartWrapService } from './chart-wrap.service';
 import { ChartService } from './chart.service';
 

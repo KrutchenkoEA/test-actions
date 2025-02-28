@@ -1,7 +1,13 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { ElementRef, Injectable, inject } from '@angular/core';
+import { ElementRef, inject, Injectable } from '@angular/core';
 import { mxCell, mxGraph, mxGraphModel } from 'mxgraph';
-import { IDataMappingOptions, IFormulaData, IOmCellObject, IViewerTag } from '../../../../../../models';
+import {
+  IDataMappingOptions,
+  IFormulaData,
+  IOmCellObject,
+  IViewerTag,
+  MnemoGraphAbstract,
+} from '../../../../../../models';
 import {
   ViewerActiveShapesService,
   ViewerFormulaService,
@@ -11,15 +17,14 @@ import {
   ViewerService,
   ViewerTagService,
 } from '../../../../../pure-modules';
-import { MnemoAbstractClass } from '../mnemo-abstract-class';
 import { MnemoFormulaService } from './mnemo-formula.service';
 import { MnemoOmService } from './mnemo-om.service';
 import { MnemoTagService } from './mnemo-tag.service';
 import { MnemoValueApplyService } from './mnemo-value-apply.service';
 
 @Injectable()
-export class MnemoValueService implements MnemoAbstractClass {
-  viewerService = inject(ViewerService);
+export class MnemoValueService implements MnemoGraphAbstract {
+  public viewerService = inject(ViewerService);
   private readonly mnemoValueApplyService = inject(MnemoValueApplyService);
   private readonly mnemoTagService = inject(MnemoTagService);
   private readonly mnemoOmService = inject(MnemoOmService);
@@ -136,22 +141,22 @@ export class MnemoValueService implements MnemoAbstractClass {
     this.viewerFormulaService.formulaInitActiveShapes$.next(!!formulaCellsSetAs.size);
     this.viewerFormulaService.formulaSetActiveShapes$.next(formulaCellsSetAs);
 
-    this.initSubscribe();
+    this.initServices();
   }
 
-  public initSubscribe(): void {
-    this.viewerIntervalService.initSubscribe();
+  public initServices(): void {
+    this.viewerIntervalService.initSubs();
 
     if (this.viewerTagService.isTagsInit$.value) {
-      this.mnemoTagService.initSubscribe();
+      this.mnemoTagService.initSubs();
     }
 
     if (this.viewerOMService.omAttrInit$.value) {
-      this.mnemoOmService.initSubscribe();
+      this.mnemoOmService.initSubs();
     }
 
     if (this.viewerFormulaService.formulaInit$.value) {
-      this.mnemoFormulaService.initSubscribe();
+      this.mnemoFormulaService.initSubs();
     }
 
     this.mnemoValueApplyService.setBlinkInterval(true);
@@ -163,6 +168,6 @@ export class MnemoValueService implements MnemoAbstractClass {
     this.mnemoTagService.destroy();
     this.mnemoOmService.destroy();
     this.mnemoFormulaService.destroy();
-    this.viewerIntervalService.destroy();
+    this.viewerIntervalService.destroySubs();
   }
 }

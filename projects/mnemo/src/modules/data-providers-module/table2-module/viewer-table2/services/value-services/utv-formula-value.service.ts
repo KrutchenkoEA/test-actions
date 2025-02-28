@@ -1,15 +1,14 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { inject, Injectable } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { IFormulaCalcRes, IUTTableCellData } from '../../../../../../models';
+import { IFormulaCalcRes, IMnemoUnsubscribed, IUTTableCellData } from '../../../../../../models';
 import { RtdbFormulaApiService } from '../../../../../../services';
 import { ViewerFormulaService, ViewerHelperService } from '../../../../../pure-modules';
 import { UtvDataRefService } from '../utv-data-ref.service';
-import { UtvValueAbstractClass } from '../utv-value-abstract.class';
 import { UtvValueApplyService } from './utv-value-apply.service';
 
 @Injectable()
-export class UtvFormulaValueService implements UtvValueAbstractClass {
+export class UtvFormulaValueService implements IMnemoUnsubscribed {
   public utvDataRefService = inject(UtvDataRefService);
   private readonly viewerFormulaService = inject(ViewerFormulaService);
   private readonly viewerHelperService = inject(ViewerHelperService);
@@ -18,9 +17,7 @@ export class UtvFormulaValueService implements UtvValueAbstractClass {
 
   public subscriptions: Subscription[] = [];
 
-  public init(): void {}
-
-  public initSubscribe(): void {
+  public initSubs(): void {
     const formulaSub$ = this.viewerFormulaService.formulaInit$.subscribe((v) => {
       if (!this.utvDataRefService?.univer) return;
       if (v) {
@@ -32,7 +29,7 @@ export class UtvFormulaValueService implements UtvValueAbstractClass {
     this.subscriptions.push(formulaSub$);
   }
 
-  public destroy(): void {
+  public destroySubs(): void {
     this.clearFormulaInterval(true);
     this.subscriptions?.forEach((sub) => sub.unsubscribe());
     this.subscriptions = [];
@@ -45,7 +42,7 @@ export class UtvFormulaValueService implements UtvValueAbstractClass {
       this.setFormulaValue(cell);
       this.viewerFormulaService.formulaMap.set(
         cell.custom.id,
-        setInterval(() => this.setFormulaValue(cell), cell.custom.formulaInterval * 1000)
+        setInterval(() => this.setFormulaValue(cell), cell.custom.formulaInterval * 1000),
       );
     }
   }
@@ -75,7 +72,7 @@ export class UtvFormulaValueService implements UtvValueAbstractClass {
         this.valueApplyService.checkRulesAndApplyCellValue(
           cell,
           res.result[0],
-          this.viewerHelperService.getStatus(cellObject.status)
+          this.viewerHelperService.getStatus(cellObject.status),
         );
       }
     });

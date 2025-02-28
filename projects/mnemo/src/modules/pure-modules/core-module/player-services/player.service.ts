@@ -2,9 +2,7 @@
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { IOMAttributeValues, ITagsValues, ITimeSelect } from '../../../../models';
-import { ViewerFormulaService } from '../services/viewer-formula.service';
-import { ViewerOMService } from '../services/viewer-om.service';
-import { ViewerTagService } from '../services/viewer-tag.service';
+import { ViewerFormulaService, ViewerOMService, ViewerTagService } from '../services';
 
 @Injectable()
 export class PlayerService {

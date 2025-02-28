@@ -86,8 +86,8 @@ export class ViewerTable2Component implements OnInit, OnDestroy {
 
   public ngOnDestroy(): void {
     this.utvService.destroy();
-    this.utvTooltipService.destroy();
-    this.utvValueService.destroy();
+    this.utvTooltipService.destroySubs();
+    this.utvValueService.destroySubs();
     this.commandExecuter?.dispose();
     this.beforeCommandExecuter?.dispose();
     this.utvDataRefService.destroyUniver();
@@ -128,7 +128,7 @@ export class ViewerTable2Component implements OnInit, OnDestroy {
 
     this.uttlCellDataService.init(this.utvDataRefService);
 
-    this.utvTooltipService.init();
+    this.utvTooltipService.initSubs();
     this.initListener();
 
     setTimeout(() => this.setTheme());

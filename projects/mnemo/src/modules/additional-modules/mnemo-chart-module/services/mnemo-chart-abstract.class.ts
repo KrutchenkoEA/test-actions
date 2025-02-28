@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { Subscription } from 'rxjs';
-import { IMnemoChartDataOptions, IMnemoChartLineData } from '../../../../models/charts';
+import { IMnemoChartDataOptions, IMnemoChartLineData } from '../../../../models';
 
 export abstract class MnemoChartAbstractClass {
   public abstract chartData: IMnemoChartLineData[];

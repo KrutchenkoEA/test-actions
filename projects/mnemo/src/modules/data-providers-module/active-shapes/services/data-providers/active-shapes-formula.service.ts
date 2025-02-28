@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { inject, Injectable, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ActiveShapesAbstractClass } from '../../../../../models';
+import { ActiveShapesAbstractClass, IMnemoUnsubscribed } from '../../../../../models';
 import { ViewerFormulaService, ViewerService } from '../../../../pure-modules';
 
 @Injectable()
@@ -14,13 +14,20 @@ export class ActiveShapesFormulaService implements ActiveShapesAbstractClass<nul
 
   public ngOnDestroy(): void {
     this.viewerFormulaService.cleanData();
+    this.destroySubs();
+  }
+
+  public initSubs(): void {
+  }
+
+  public destroySubs(): void {
     this.subscriptions?.forEach((sub) => sub.unsubscribe());
     this.subscriptions = [];
   }
 
-  public initSubscribe(): void {}
+  public getHistoryData(): void {
+  }
 
-  public getHistoryData(): void {}
-
-  public sortHistoryData(): void {}
+  public sortHistoryData(): void {
+  }
 }

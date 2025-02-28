@@ -4,12 +4,12 @@
 import { ApplicationRef, ComponentRef, createComponent, inject, Injectable, Injector } from '@angular/core';
 import { mxCell, mxGraph } from 'mxgraph';
 import { mx } from '../../../../../config/mxObject';
-import { DEFAULT_ACTIVE_ELEMENTS_SHAPE_PROPERTIES, DEFAULT_STYLES} from '../../../../../consts';
-import { DataItemTypeEnum, ShapeTypeEnum } from '../../../../../models';
+import { DEFAULT_ACTIVE_ELEMENTS_SHAPE_PROPERTIES, DEFAULT_STYLES } from '../../../../../consts';
+import { DataItemTypeEnum, MnemoGraphAbstract, ShapeTypeEnum } from '../../../../../models';
 import { ActiveShapesMnemoWrapperComponent, ActiveShapesWrapperAbstract } from '../../../active-shapes';
 
 @Injectable()
-export class MnemoGraphService {
+export class MnemoGraphService implements MnemoGraphAbstract {
   private readonly injector = inject(Injector);
 
   public graph: mxGraph;
@@ -97,7 +97,7 @@ export class MnemoGraphService {
       return cell.value?.toString() ?? '';
     };
 
-    mx.mxCodec.prototype.decode = function (node: Element, into: Element): Element {
+    mx.mxCodec.prototype.decode = function(node: Element, into: Element): Element {
       if (node !== null && node.nodeType === mx.mxConstants.NODETYPE_ELEMENT) {
         const ctor = mx[node.nodeName as keyof typeof mx] || window[node.nodeName];
         if (!ctor) {
@@ -114,7 +114,7 @@ export class MnemoGraphService {
       return null;
     };
 
-    mx.mxGraph.prototype.getLabel = function (cell: mxCell): string | Node {
+    mx.mxGraph.prototype.getLabel = function(cell: mxCell): string | Node {
       if (this.labelsVisible && cell != null) {
         const value = this.model.getValue(cell);
         const style = this.getCurrentCellStyle(cell);
@@ -132,7 +132,7 @@ export class MnemoGraphService {
 
     // mx.mxPopupMenuHandler.apply(this, arguments);
 
-    mx.mxPopupMenu.prototype.createSubmenu = function (parent: any): void {
+    mx.mxPopupMenu.prototype.createSubmenu = function(parent: any): void {
       parent.table = document.createElement('table');
       parent.table.className = 'mxPopupMenu';
 
@@ -150,7 +150,7 @@ export class MnemoGraphService {
     };
 
     const graphDblClick = mx.mxGraph.prototype.dblClick;
-    mx.mxGraph.prototype.dblClick = function (event, cell): void {
+    mx.mxGraph.prototype.dblClick = function(event, cell): void {
       if (cell.cellType === ShapeTypeEnum.ActiveElement) {
         return null;
       }
@@ -159,7 +159,7 @@ export class MnemoGraphService {
 
     const graphMouseMove = mx.mxPanningHandler.prototype.mouseMove;
 
-    mx.mxPanningHandler.prototype.mouseMove = function (sender, me): void {
+    mx.mxPanningHandler.prototype.mouseMove = function(sender, me): void {
       const cell = me.getCell();
       if (cell?.cellType === ShapeTypeEnum.ActiveElement) {
         return null;

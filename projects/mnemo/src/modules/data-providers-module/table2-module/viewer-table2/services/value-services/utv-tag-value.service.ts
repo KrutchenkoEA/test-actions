@@ -2,7 +2,7 @@
 import { inject, Injectable } from '@angular/core';
 import { forkJoin, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { IMnemoEvent, ITagsValues, IUTTableCellData } from '../../../../../../models';
+import { IMnemoEvent, IMnemoUnsubscribed, ITagsValues, IUTTableCellData } from '../../../../../../models';
 import { RtdbTagApiService } from '../../../../../../services';
 import {
   PlayerModeService,
@@ -13,11 +13,10 @@ import {
 } from '../../../../../pure-modules';
 import { UtTlCellDataService } from '../../../components/univer-table-tl';
 import { UtvDataRefService } from '../utv-data-ref.service';
-import { UtvValueAbstractClass } from '../utv-value-abstract.class';
 import { UtvValueApplyService } from './utv-value-apply.service';
 
 @Injectable()
-export class UtvTagValueService implements UtvValueAbstractClass {
+export class UtvTagValueService implements IMnemoUnsubscribed {
   public utvDataRefService = inject(UtvDataRefService);
   public viewerService = inject(ViewerService);
   private readonly viewerTagService = inject(ViewerTagService);
@@ -30,9 +29,7 @@ export class UtvTagValueService implements UtvValueAbstractClass {
 
   public subscriptions: Subscription[] = [];
 
-  public init(): void {}
-
-  public initSubscribe(): void {
+  public initSubs(): void {
     if (this.viewerService.mnemoViewerType === 'rest') {
       const intervalSub$ = this.viewerIntervalService.intervalTicks$
         .pipe(filter(() => !this.playerModeService.isPlayerMode && this.viewerTagService.isTagsInit$.value))
@@ -61,7 +58,7 @@ export class UtvTagValueService implements UtvValueAbstractClass {
     this.subscriptions.push(metaInfoSub$);
   }
 
-  public destroy(): void {
+  public destroySubs(): void {
     this.viewerTagService.cleanData();
     this.subscriptions?.forEach((sub) => sub.unsubscribe());
     this.subscriptions = [];
@@ -80,7 +77,7 @@ export class UtvTagValueService implements UtvValueAbstractClass {
               v.withFormat = true;
             });
             return tagValues;
-          })
+          }),
         ),
       ]).subscribe(([tagValues, tagValues2]) => {
         this.viewerTagService.updateTagData$.next([...tagValues, ...tagValues2]);
@@ -105,7 +102,7 @@ export class UtvTagValueService implements UtvValueAbstractClass {
         this.uttlCellDataService.setCellData(
           cell.custom.ri,
           cell.custom.ci,
-          cell.v + (cell?.custom?.unitName ? ` ${cell?.custom?.unitName}` : '')
+          cell.v + (cell?.custom?.unitName ? ` ${cell?.custom?.unitName}` : ''),
         );
       }
     });

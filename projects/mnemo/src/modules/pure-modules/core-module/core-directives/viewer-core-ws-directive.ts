@@ -20,7 +20,6 @@ import { ViewerCheckerService } from '../services/viewer-checker.service';
   standalone: true,
 })
 export class ViewerCoreWsDirective extends WidgetPlatform<unknown> implements OnInit, OnDestroy {
-  protected readonly widgetService: WidgetService;
   public id: string;
   public uniqId: string;
 
@@ -77,7 +76,7 @@ export class ViewerCoreWsDirective extends WidgetPlatform<unknown> implements On
       });
   }
 
-  public ngOnDestroy(): void {
+  public override ngOnDestroy(): void {
     this.viewerService.cleanData();
     super.ngOnDestroy();
   }
@@ -156,7 +155,7 @@ export class ViewerCoreWsDirective extends WidgetPlatform<unknown> implements On
     this.vcActiveMap.clear();
   }
 
-  protected dataConnect(): void {
+  protected override dataConnect(): void {
     super.dataConnect();
   }
 

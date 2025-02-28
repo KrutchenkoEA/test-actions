@@ -7,9 +7,9 @@ import {
   IDashboardItem,
   IMnemoChartDateOptions,
   IMnemoChartRequestOptions,
-  IMnemoChartViewOptions, IMnemoSubModel,
+  IMnemoChartViewOptions,
+  IMnemoUnsubscribed,
 } from '../../../../../models';
-import { MnemoServiceAbstract } from '../../../../pure-modules';
 import { ActiveShapesFormulaService } from './active-shapes-formula.service';
 import { ActiveShapesOmService } from './active-shapes-om.service';
 import { ActiveShapesRawService } from './active-shapes-raw.service';
@@ -19,7 +19,7 @@ import { ActiveShapesValueService } from './active-shapes-value.service';
 import { ActiveShapesService } from './active-shapes.service';
 
 @Injectable()
-export class ActiveShapesWrapperService implements IMnemoSubModel, OnDestroy {
+export class ActiveShapesWrapperService implements IMnemoUnsubscribed, OnDestroy {
   private readonly dates$ = inject<StoreObservable<IDatesInterval>>(DATES_GLOBAL$);
   private readonly activeShapesService = inject(ActiveShapesService);
   private readonly activeShapesValueService = inject(ActiveShapesValueService);
@@ -49,11 +49,10 @@ export class ActiveShapesWrapperService implements IMnemoSubModel, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.subscriptions?.forEach((sub) => sub.unsubscribe());
-    this.subscriptions = [];
+    this.destroySubs();
   }
 
-  public initSubscribe(): void {
+  public initSubs(): void {
     if (this.item?.requestOptions?.realtimeRefresh === false) {
       this.activeShapesService.fixedPointsRealtimeValuesMap.set(this.item.id, false);
     } else {
@@ -74,6 +73,11 @@ export class ActiveShapesWrapperService implements IMnemoSubModel, OnDestroy {
     this.subscriptions.push(dateSub$);
   }
 
+  public destroySubs(): void {
+    this.subscriptions?.forEach((sub) => sub.unsubscribe());
+    this.subscriptions = [];
+  }
+
   public reDraw(): void {
     if (!this.requestOptions) {
       this.drawByDate(this.dates$.getValue());
@@ -90,18 +94,18 @@ export class ActiveShapesWrapperService implements IMnemoSubModel, OnDestroy {
   }
 
   private drawByRequestOptions(
-    date: IMnemoChartDateOptions = this.getDefaultDate(this.requestOptions.hoursPeriod)
+    date: IMnemoChartDateOptions = this.getDefaultDate(this.requestOptions.hoursPeriod),
   ): void {
     this.activeShapesRealtimeService.cleanData();
     this.activeShapesTagService.getHistoryData(
       new Date(this.requestOptions?.date?.start ?? date.start),
       new Date(this.requestOptions?.date?.end ?? date?.end),
       this.requestOptions?.scale,
-      this.requestOptions?.intervalsCount
+      this.requestOptions?.intervalsCount,
     );
     this.activeShapesOmService.getHistoryData(
       new Date(this.requestOptions?.date?.start ?? date.start),
-      new Date(this.requestOptions?.date?.end ?? date.end)
+      new Date(this.requestOptions?.date?.end ?? date.end),
     );
     this.activeShapesFormulaService.getHistoryData();
 
@@ -112,7 +116,7 @@ export class ActiveShapesWrapperService implements IMnemoSubModel, OnDestroy {
           this.item.id,
           this.item.viewElementType,
           this.item.options.view,
-          this.requestOptions
+          this.requestOptions,
         );
       }
     });
@@ -135,7 +139,7 @@ export class ActiveShapesWrapperService implements IMnemoSubModel, OnDestroy {
       date.start,
       date.end,
       this.requestOptions?.scale,
-      this.requestOptions?.intervalsCount
+      this.requestOptions?.intervalsCount,
     );
     this.activeShapesOmService.getHistoryData(date.start, date.end);
     this.activeShapesFormulaService.getHistoryData();
@@ -146,7 +150,7 @@ export class ActiveShapesWrapperService implements IMnemoSubModel, OnDestroy {
           this.item.id,
           this.item.viewElementType,
           this.item.options.view,
-          null
+          null,
         );
       }
     });
@@ -155,7 +159,7 @@ export class ActiveShapesWrapperService implements IMnemoSubModel, OnDestroy {
   private getDefaultDate(hoursPeriod?: number): IMnemoChartDateOptions {
     return {
       start: new Date(
-        new Date().setHours(new Date().getHours() - (hoursPeriod ?? MNEMO_CHART_DEFAULT_REQUEST_OPTIONS.hoursPeriod))
+        new Date().setHours(new Date().getHours() - (hoursPeriod ?? MNEMO_CHART_DEFAULT_REQUEST_OPTIONS.hoursPeriod)),
       ),
       end: new Date(),
     };

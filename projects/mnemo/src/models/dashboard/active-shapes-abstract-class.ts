@@ -1,14 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { Subscription } from 'rxjs';
-import { IMnemoSubModel } from '../mnemo/mnemo-sub.model';
+import { IMnemoUnsubscribed } from '../viewer';
 
-export abstract class ActiveShapesAbstractClass<U, V> implements IMnemoSubModel {
-  public abstract subscriptions?: Subscription[];
-
-  public abstract initSubscribe(...args): void;
-
-  public abstract destroy?(): void;
-
+export abstract class ActiveShapesAbstractClass<U, V> extends IMnemoUnsubscribed {
   public abstract getHistoryData(start: Date, end: Date): void;
 
   public abstract sortHistoryData(data: V): void;

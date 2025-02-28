@@ -1,16 +1,15 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { mxCell, mxGraph } from 'mxgraph';
 import { Subscription } from 'rxjs';
-import { IFormulaCalcRes, ShapeTypeEnum } from '../../../../../../models';
+import { IFormulaCalcRes, IMnemoUnsubscribed, MnemoGraphAbstract, ShapeTypeEnum } from '../../../../../../models';
 import { RtdbFormulaApiService } from '../../../../../../services';
-import { MnemoAbstractClass } from '../mnemo-abstract-class';
 import { ViewerFormulaService, ViewerHelperService, ViewerService } from '../../../../../pure-modules';
 import { MnemoValueApplyService } from './mnemo-value-apply.service';
 
 @Injectable()
-export class MnemoFormulaService implements MnemoAbstractClass {
-  viewerService = inject(ViewerService);
+export class MnemoFormulaService implements MnemoGraphAbstract, IMnemoUnsubscribed {
+  public viewerService = inject(ViewerService);
   private readonly viewerHelperService = inject(ViewerHelperService);
   private readonly viewerFormulaService = inject(ViewerFormulaService);
   private readonly valueApplyService = inject(MnemoValueApplyService);
@@ -23,7 +22,7 @@ export class MnemoFormulaService implements MnemoAbstractClass {
     this.graph = graph;
   }
 
-  public initSubscribe(): void {
+  public initSubs(): void {
     const formulaSub$ = this.viewerFormulaService.formulaInit$.subscribe((v) => {
       if (!this.graph) return;
       if (v) {
@@ -38,6 +37,10 @@ export class MnemoFormulaService implements MnemoAbstractClass {
 
   public destroy(): void {
     this.clearFormulaInterval(true);
+    this.destroySubs();
+  }
+
+  public destroySubs(): void {
     this.subscriptions?.forEach((sub) => sub.unsubscribe());
     this.subscriptions = [];
   }
@@ -48,7 +51,7 @@ export class MnemoFormulaService implements MnemoAbstractClass {
       this.setFormulaValue(cell);
       this.viewerFormulaService.formulaMap.set(
         cell.getId(),
-        setInterval(() => this.setFormulaValue(cell), cell.formulaInterval * 1000)
+        setInterval(() => this.setFormulaValue(cell), cell.formulaInterval * 1000),
       );
     }
   }
@@ -78,7 +81,7 @@ export class MnemoFormulaService implements MnemoAbstractClass {
           this.valueApplyService.checkRulesAndApplyCellValue(
             cell,
             res.result[0] as number,
-            this.viewerHelperService.getStatus(cell.status)
+            this.viewerHelperService.getStatus(cell.status),
           );
         }
       }

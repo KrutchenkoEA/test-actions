@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { mxCell, mxGraph } from 'mxgraph';
 import { BehaviorSubject, combineLatest, debounceTime, filter, forkJoin, Subscription } from 'rxjs';
 import {
@@ -9,15 +9,20 @@ import {
   ViewerOMService,
   ViewerService,
 } from '../../../../../pure-modules';
-import { MnemoAbstractClass } from '../mnemo-abstract-class';
-import { IMnemoEvent, IOMAttributeAll, IOMAttributeValues } from '../../../../../../models';
+import {
+  IMnemoEvent,
+  IMnemoUnsubscribed,
+  IOMAttributeAll,
+  IOMAttributeValues,
+  MnemoGraphAbstract,
+} from '../../../../../../models';
 import { MnemoValueApplyService } from './mnemo-value-apply.service';
 import { RtdbOmApiService } from '../../../../../../services';
 
 @Injectable()
-export class MnemoOmService implements MnemoAbstractClass {
-  viewerService = inject(ViewerService);
-  playerModeService = inject(PlayerModeService);
+export class MnemoOmService implements MnemoGraphAbstract, IMnemoUnsubscribed {
+  public viewerService = inject(ViewerService);
+  public playerModeService = inject(PlayerModeService);
   private readonly viewerHelperService = inject(ViewerHelperService);
   private readonly viewerOMService = inject(ViewerOMService);
   private readonly valueApplyService = inject(MnemoValueApplyService);
@@ -34,7 +39,7 @@ export class MnemoOmService implements MnemoAbstractClass {
     this.graph = graph;
   }
 
-  public initSubscribe(): void {
+  public initSubs(): void {
     const intervalSub$ = this.viewerIntervalService.intervalTicks$
       .pipe(filter(() => !this.playerModeService.isPlayerMode && this.viewerOMService.omAttrInit$.value))
       .subscribe(() => this.getData());
@@ -54,6 +59,10 @@ export class MnemoOmService implements MnemoAbstractClass {
 
   public destroy(): void {
     this.viewerOMService.cleanData();
+    this.destroySubs();
+  }
+
+  public destroySubs(): void {
     this.subscriptions?.forEach((sub) => sub.unsubscribe());
     this.subscriptions = [];
   }
@@ -64,7 +73,7 @@ export class MnemoOmService implements MnemoAbstractClass {
 
     if (defaultMap.size) {
       forkJoin(
-        Array.from(defaultMap.keys()).map((elementId) => this.rtdbOmApiService.getOMAttributeAll(elementId, false))
+        Array.from(defaultMap.keys()).map((elementId) => this.rtdbOmApiService.getOMAttributeAll(elementId, false)),
       ).subscribe((attr) => {
         attr?.forEach((d) => {
           const dataMap = this.viewerOMService.omAttrMapData.get('default').get(d.id);
@@ -82,7 +91,7 @@ export class MnemoOmService implements MnemoAbstractClass {
 
     if (roundedMap.size) {
       forkJoin(
-        Array.from(roundedMap.keys()).map((elementId) => this.rtdbOmApiService.getOMAttributeAll(elementId, true))
+        Array.from(roundedMap.keys()).map((elementId) => this.rtdbOmApiService.getOMAttributeAll(elementId, true)),
       ).subscribe((attrWithFormat) => {
         attrWithFormat?.forEach((d) => {
           const dataMap = this.viewerOMService.omAttrMapData.get('rounded').get(d.id);
@@ -163,7 +172,7 @@ export class MnemoOmService implements MnemoAbstractClass {
         cell,
         Number(data.value ?? 0),
         status,
-        cell.roundValue ? data.value?.toString() : null
+        cell.roundValue ? data.value?.toString() : null,
       );
     } else {
       this.valueApplyService.applyCellValue(cell, data?.value ?? cell.attrName, status);

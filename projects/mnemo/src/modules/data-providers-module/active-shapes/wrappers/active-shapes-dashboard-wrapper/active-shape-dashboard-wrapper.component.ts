@@ -49,7 +49,7 @@ import { ActiveShapesWrapperDirective } from '../active-shapes-wrapper.directive
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ActiveShapeDashboardWrapperComponent extends ActiveShapesWrapperDirective implements OnInit {
-  public injector = inject(Injector);
+  public override injector = inject(Injector);
   private readonly popupService = inject(PopupService);
   private readonly activeShapesWrapperService = inject(ActiveShapesWrapperService);
   private readonly activeShapesRealtimeService = inject(ActiveShapesRealtimeService, { optional: true });
@@ -66,7 +66,7 @@ export class ActiveShapeDashboardWrapperComponent extends ActiveShapesWrapperDir
   public ngOnInit(): void {
     this.activeShapesWrapperService.item = this.item;
     if (this.item) {
-      this.activeShapesWrapperService.initSubscribe();
+      this.activeShapesWrapperService.initSubs();
     }
   }
 
