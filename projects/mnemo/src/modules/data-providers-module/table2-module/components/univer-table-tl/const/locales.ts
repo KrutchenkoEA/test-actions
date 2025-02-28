@@ -89,7 +89,7 @@ import {
   enUS as TlPluginEnUS,
   faIR as TlPluginFaIR,
   ruRU as TlPluginRuRU,
-} from 'projects/shared/mnemo/modules/data-providers-module/table2-module/components/univer-table-tl/tl-plugin';
+} from '../tl-plugin';
 
 export const univerLocales = {
   [LocaleType.RU_RU]: merge(

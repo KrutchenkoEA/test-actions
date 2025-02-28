@@ -1,7 +1,7 @@
-@import 'projects/shared/mnemo/mixins/shared-mixin';
-@import 'projects/shared/mnemo/mixins/scroll-mixin';
-@import 'projects/shared/mnemo/mixins/table-mixin';
-@import 'projects/shared/mnemo/mixins/split-mixin';
+@import '../../../../mixins/shared-mixin';
+@import '../../../../mixins/scroll-mixin';
+@import '../../../../mixins/table-mixin';
+@import '../../../../mixins/split-mixin';
 
 * {
   box-sizing: border-box;

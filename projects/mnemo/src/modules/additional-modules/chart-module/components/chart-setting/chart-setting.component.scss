@@ -1,6 +1,6 @@
-@import 'projects/shared/mnemo/mixins/shared-mixin';
-@import 'projects/shared/mnemo/mixins/table-mixin';
-@import 'projects/shared/mnemo/mixins/popup-mixin';
+@import '../../../../../mixins/shared-mixin';
+@import '../../../../../mixins/table-mixin';
+@import '../../../../../mixins/popup-mixin';
 
 * {
   box-sizing: border-box;

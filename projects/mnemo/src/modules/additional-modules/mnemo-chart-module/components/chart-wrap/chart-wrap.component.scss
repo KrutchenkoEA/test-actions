@@ -1,5 +1,5 @@
-@import 'projects/shared/mnemo/mixins/shared-mixin';
-@import 'projects/shared/mnemo/mixins/popup-mixin';
+@import '../../../../../mixins/shared-mixin';
+@import '../../../../../mixins/popup-mixin';
 
 :host {
   width: 100%;

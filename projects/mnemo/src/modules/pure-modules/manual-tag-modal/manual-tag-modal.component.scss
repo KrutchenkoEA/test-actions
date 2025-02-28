@@ -1,4 +1,4 @@
-@import 'projects/shared/mnemo/mixins/popup-mixin';
+@import '../../../mixins/popup-mixin';
 
 @include popup(370px, 420px);
 

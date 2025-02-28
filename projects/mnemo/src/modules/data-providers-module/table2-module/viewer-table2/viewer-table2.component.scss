@@ -1,5 +1,5 @@
-@import 'projects/shared/mnemo/modules/data-providers-module/table2-module/components/univer-table-tl/style-import-mixin';
-@import 'projects/shared/mnemo/modules/data-providers-module/table2-module/components/univer-table-tl/univer-table-colors.mixin';
+@import '../../../data-providers-module/table2-module/components/univer-table-tl/style-import-mixin';
+@import '../../../data-providers-module/table2-module/components/univer-table-tl/univer-table-colors.mixin';
 
 @include ut-tl-styles();
 
