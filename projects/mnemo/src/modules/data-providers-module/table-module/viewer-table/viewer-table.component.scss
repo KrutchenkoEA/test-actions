@@ -1,0 +1,127 @@
+@import 'projects/shared/mnemo/mixins/shared-mixin';
+@import 'projects/shared/mnemo/mixins/scroll-mixin';
+
+* {
+  box-sizing: border-box;
+}
+
+::ng-deep {
+  .cdk-overlay-pane {
+    .container {
+      max-width: none !important;
+      font-size: 12px !important;
+      line-height: 15px !important;
+
+      .scrollable {
+        border-radius: 4px !important;
+      }
+
+      .tlui-menu-item_bordered {
+        border-bottom: 1px solid var(--color-text-signatures-and-future);
+      }
+    }
+  }
+}
+
+:host {
+  ::ng-deep {
+    as-split {
+      height: 98%;
+    }
+
+    .as-split-gutter {
+      background-color: $body-background !important;
+      flex-basis: 13px !important;
+      border-top: 1px solid $border !important;
+      border-bottom: 1px solid $border !important;
+    }
+
+    .as-disabled > .as-split-gutter .as-split-gutter-icon {
+      background-image: none !important;
+    }
+
+    as-split-area.table-container {
+      @include horizontal-scroll();
+
+      overflow-y: auto;
+    }
+  }
+}
+
+@keyframes blink {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+table.main-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: $body-background;
+
+  td {
+    position: relative;
+    padding: 0;
+    height: inherit;
+    width: inherit;
+    border: 1px solid $border;
+    color: $contrast-color;
+    font-size: inherit;
+
+    .cell-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: inherit;
+      height: inherit;
+
+      &_invisible {
+        opacity: 0;
+      }
+
+      &_blink {
+        animation: blink 0.5s infinite;
+      }
+
+      &:hover {
+        background-color: var(--color-transparency-plan-20) !important;
+      }
+    }
+
+    .error-icon {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      color: var(--color-index-deviation);
+      cursor: help;
+
+      &:hover {
+        color: var(--color-index-critical) !important;
+      }
+    }
+  }
+
+  .is-colspan {
+    &_hidden {
+      display: none;
+    }
+
+    div:first-child {
+      width: 100%;
+    }
+  }
+
+  .is-rowspan {
+    &_hidden {
+      display: none;
+    }
+
+    div:first-child {
+      height: 100%;
+    }
+  }
+}

@@ -1,0 +1,135 @@
+<div *transloco="let t; read: 'mnemo.ViewerDashboardComponent'" class="container">
+  <ng-container *ngIf="!!data; else loader">
+    <span class="title">{{ data?.name }}</span>
+
+    <div [formGroup]="form" class="body body_ltr">
+      <tlui-accordion>
+        <ng-template [tluiAccordionItemDisabled]="true" [tluiAccordionItem]="'SQL'"></ng-template>
+        <ng-template [tluiAccordionItemExpanded]="true" [tluiAccordionItem]="'RAW'">
+          <ng-container *ngFor="let d of data.options.data">
+            <ng-container *ngIf="d.sourceType === 'raw'">
+              <div class="tab-content">
+                <tlui-form-field tluiFitHeight>
+                  <tlui-label>{{ t('reqText') }}</tlui-label>
+                  <textarea [value]="d?.sourceData?.queryString" size="lg" tluiInput> </textarea>
+                </tlui-form-field>
+                <span *ngIf="!!placeholders.controls.length">{{ t('params') }}</span>
+                <div class="form">
+                  <ng-container
+                    *ngFor="let group of placeholders.controls; let placeholderIndex = index"
+                    formArrayName="placeholders"
+                  >
+                    <ng-container [formGroupName]="placeholderIndex">
+                      <div
+                        (click)="selectPathArray(group)"
+                        (mouseenter)="currentPlaceholderActive = placeholderIndex"
+                        (mouseleave)="currentPlaceholderActive = undefined"
+                        class="form__row"
+                      >
+                        <tlui-form-field class="input tlui-form-field--disabled" tluiDirDirective>
+                          <input formControlName="placeholder" size="sm" tluiInput />
+                        </tlui-form-field>
+
+                        <svg-icon
+                          *ngIf="group?.value?.isTreeEnable; else minus"
+                          [class.fx-active]="
+                            group.value?.selectedPathArray?.toString() === selectedParameter?.pathArray?.toString()
+                          "
+                          matTooltip="{{ t('dependOM') }}"
+                          src="tluiIconAddFormula"
+                        >
+                        </svg-icon>
+                        <ng-template #minus>&nbsp;-&nbsp;</ng-template>
+
+                        <ng-container *ngIf="group?.value?.type === 'select'; else stringTemp">
+                          <tlui-form-field
+                            [class.tlui-form-field--disabled]="group?.value?.disabled"
+                            class="input"
+                            tluiDirDirective
+                          >
+                            <tlui-select formControlName="value">
+                              <tlui-option *ngFor="let val of group?.value?.selectArr" [value]="val">
+                                {{ val }}
+                              </tlui-option>
+                            </tlui-select>
+                          </tlui-form-field>
+                        </ng-container>
+                        <ng-template #stringTemp>
+                          <tlui-form-field
+                            [class.tlui-form-field--disabled]="group?.value?.disabled"
+                            class="input"
+                            tluiDirDirective
+                          >
+                            <input formControlName="value" size="sm" tluiInput />
+                          </tlui-form-field>
+                        </ng-template>
+                      </div>
+                    </ng-container>
+                  </ng-container>
+                </div>
+                <objects-list-wrapper
+                  *ngIf="isTreeEnable"
+                  (selectedEmitter)="attributeSelected($event)"
+                  [baseUrl]="baseUrl"
+                  [enablePropTable]="false"
+                  [multipleSelectObject]="true"
+                  [newSelectedPathArray]="selectedParameter?.pathArray"
+                  [selectedPathArray]="selectedParameter?.pathArray"
+                  class="tree"
+                >
+                </objects-list-wrapper>
+              </div>
+            </ng-container>
+          </ng-container>
+        </ng-template>
+        <ng-template [tluiAccordionItemExpanded]="false" [tluiAccordionItem]="t('tagAndOM')">
+          <ng-container *ngFor="let d of data.options.data">
+            <ng-container *ngIf="d.sourceType === 'tag'">
+              <div class="tab-content">
+                <span *ngIf="!!tags.controls.length">{{ t('tags') }}</span>
+                <div class="form">
+                  <ng-container *ngFor="let group of tags.controls; let tagIndex = index" formArrayName="tags">
+                    <ng-container [formGroupName]="tagIndex">
+                      <div
+                        (mouseenter)="currentTagActive = tagIndex"
+                        (mouseleave)="currentTagActive = undefined"
+                        class="form__row tlui-form-field--disabled"
+                      >
+                        <tlui-form-field class="input" tluiDirDirective>
+                          <input formControlName="tagName" size="sm" tluiInput />
+                        </tlui-form-field>
+                        -
+                        <tlui-form-field class="input" tluiDirDirective>
+                          <input formControlName="tagId" size="sm" tluiInput />
+                        </tlui-form-field>
+                        <svg-icon
+                          *ngIf="currentTagActive === tagIndex && !group?.value?.disabled"
+                          (click)="findTag(tagIndex, 'tag')"
+                          class="icon"
+                          src="tluiIconSearch"
+                        ></svg-icon>
+                      </div>
+                    </ng-container>
+                  </ng-container>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+        </ng-template>
+      </tlui-accordion>
+    </div>
+
+    <div class="footer">
+      <button (click)="apply()" [disabled]="!isTouchedAndDirty()" btnStyle="primary" class="button" tluiButton>
+        {{ 'mnemo.shared.apply' | transloco }}
+      </button>
+      <button (click)="reset()" btnStyle="secondary" class="button" tluiButton>
+        {{ 'mnemo.shared.reset' | transloco }}
+      </button>
+      <button (click)="close()" btnStyle="secondary" class="button" tluiButton>
+        {{ 'mnemo.shared.close' | transloco }}
+      </button>
+    </div>
+  </ng-container>
+  <ng-template #loader>loader</ng-template>
+</div>

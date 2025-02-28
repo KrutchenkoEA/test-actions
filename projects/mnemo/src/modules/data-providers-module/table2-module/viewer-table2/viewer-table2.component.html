@@ -1,0 +1,12 @@
+<div
+  (contextmenu)="clearContextMenu()"
+  [class]="(themeService.isDarkTheme | async) ? 'tl-univer-theme-dark' : 'tl-univer-theme-light'"
+  #containerRef
+  class="univer-container"
+></div>
+
+@if (utvTooltipService.tooltipPosition$ | async; as pos) {
+  <div [style.left.px]="pos.left" [style.top.px]="pos.top - 100" [style.z-index]="22" class="mxTooltip" id="mxTooltip">
+    {{ utvTooltipService.getTootlip(pos.ri, pos.ci) }}
+  </div>
+}

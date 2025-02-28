@@ -1,0 +1,64 @@
+@if (viewerService.isLoadingViewer$ | async) {
+  <ng-container *ngTemplateOutlet="loaderSingle; context: { height: 100, paddingTop: 10 }"></ng-container>
+} @else {
+  <div class="container__content">
+    <ng-container *ngIf="viewerService.selectedNodeType$ | async as nodeType; else empty">
+      @if (
+        (!!diagram.xml && nodeType === 'mnemoscheme') ||
+        (!!diagram.table && nodeType === 'table') ||
+        (diagram.table2 && nodeType === 'table2')
+      ) {
+        <tl-viewer-mnemo
+          [reSizeWorkArea]="reSizeWorkArea$ | async"
+          [style.display]="nodeType === 'mnemoscheme' ? 'inline-block' : 'none'"
+          [xmlData]="diagram.xml"
+          class="mx-viewer"
+        >
+        </tl-viewer-mnemo>
+        <tl-viewer-table *ngIf="nodeType === 'table'" [data]="diagram.table" class="mx-table"></tl-viewer-table>
+        <tl-mnemo-viewer-toolbar *ngIf="!!diagram.xml || !!diagram.table" class="toolbar-container">
+        </tl-mnemo-viewer-toolbar>
+        <tl-mnemo-popup-chart-selector-2
+          [class.chart-toolbar_collapse]="viewerService.hiddenChartOpt"
+          #chartSelectorRef
+          class="chart-toolbar"
+        >
+        </tl-mnemo-popup-chart-selector-2>
+        <button
+          (click)="viewerService.hiddenChartOpt = !viewerService.hiddenChartOpt"
+          [class.chart-toolbar__icon_collapse]="viewerService.hiddenChartOpt"
+          [style.top.px]="!viewerService.hiddenChartOpt ? (chartSelector?.nativeElement?.offsetHeight - 4 ?? 0) : -4"
+          btnStyle="tertiary"
+          class="chart-toolbar__icon"
+          size="sm"
+          tluiButton
+        >
+          <svg-icon
+            [src]="viewerService.hiddenChartOpt ? 'tluiIconArrowDownSimple' : 'tluiIconArrowUpSimple'"
+            class="tlui-icon--sm"
+          >
+          </svg-icon>
+        </button>
+      } @else if (!!diagram.dashboard && nodeType === 'dashboard') {
+        <tl-mnemo-dashboard [data]="diagram.dashboard" [reSizeWorkArea]="reSizeWorkArea$ | async" class="mx-dashboard">
+        </tl-mnemo-dashboard>
+      }
+    </ng-container>
+
+    <ng-template #empty>
+      <div class="no-data">
+        <tlui-lottie-animation animationType="magnifier" width="100px"></tlui-lottie-animation>
+        <span class="title">{{ 'mnemo.shared.youDidntChooseAnything' | transloco }}</span>
+        <span class="message">{{ 'mnemo.shared.youDidntChooseAnythingText' | transloco }}</span>
+      </div>
+    </ng-template>
+  </div>
+}
+<ng-template #loaderSingle let-height="height" let-paddingTop="paddingTop">
+  <div [style.height.%]="height" [style.padding.px]="paddingTop">
+    <ngx-skeleton-loader
+      [theme]="{ width: '100%', height: '99%', backgroundColor: 'var(--color-color-6)' }"
+      appearance="line"
+    ></ngx-skeleton-loader>
+  </div>
+</ng-template>

@@ -1,0 +1,36 @@
+@if (isVisible$ | async) {
+  @if (activeShapesService?.isLoading$ | async) {
+    <div class="progress-loader">
+      <ngx-skeleton-loader
+        [theme]="{ width: '100%', height: '100%', backgroundColor: 'var(--color-color-6)' }"
+        appearance="line"
+      ></ngx-skeleton-loader>
+    </div>
+  }
+  <div
+    [cdkContextMenuTriggerFor]="menu"
+    [cdkContextMenuTriggerData]="{ item: item }"
+    [style.height.px]="size.height"
+    [style.width.px]="size.width"
+  >
+    <ng-container
+      *ngComponentOutlet="
+        getComponentByType(item.viewElementType);
+        injector: item.id | fn: getInjector : item.options;
+        inputs: { size }
+      "
+    ></ng-container>
+  </div>
+
+  <ng-template #menu let-item="item">
+    <table (click)="openSettingPopup()" [style.width.px]="138" cdkMenu class="mxPopupMenu">
+      <tbody>
+        <tr class="mxPopupMenuItem">
+          <td class="mxPopupMenuIcon"></td>
+          <td align="left" class="mxPopupMenuItem">{{ 'mnemo.ViewerDashboardComponent.setChart' | transloco }}</td>
+          <td class="mxPopupMenuItem"></td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-template>
+}

@@ -1,0 +1,12 @@
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: calc(100% - 50px);
+}
+
+.container {
+  font-size: 150px;
+  font-weight: 700;
+}

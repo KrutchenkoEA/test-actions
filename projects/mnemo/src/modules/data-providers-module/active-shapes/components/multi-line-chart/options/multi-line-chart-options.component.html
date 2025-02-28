@@ -1,0 +1,21 @@
+<div [formGroup]="formGroup" class="tab-container">
+  <div class="tab-container__buttons">
+    <tlui-checkbox formControlName="requestControl"
+      >{{ 'mnemo.ChartSettingComponent.customRequest' | transloco }}
+    </tlui-checkbox>
+  </div>
+  <tl-mnemo-request-setting-form
+    [class.tlui-disabled]="!requestControl?.value"
+    [formGroupName]="'requestForm'"
+    [isExpanded]="requestControl?.value"
+  ></tl-mnemo-request-setting-form>
+  <tl-mnemo-view-setting-form
+    [formGroupName]="'viewForm'"
+    [isExpanded]="false"
+    [isShowAutoZoom]="true"
+    [isShowExponent]="false"
+    [isShowMaxSelectedTrend]="true"
+  >
+  </tl-mnemo-view-setting-form>
+  <tl-mnemo-multi-line-setting-form [formGroupName]="'optionsForm'"></tl-mnemo-multi-line-setting-form>
+</div>

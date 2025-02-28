@@ -1,0 +1,44 @@
+@import 'projects/shared/mnemo/modules/data-providers-module/table2-module/components/univer-table-tl/style-import-mixin';
+@import 'projects/shared/mnemo/modules/data-providers-module/table2-module/components/univer-table-tl/univer-table-colors.mixin';
+
+@include ut-tl-styles();
+
+tl-mnemo-viewer-table2 {
+  .univer-container {
+    position: relative;
+    flex: 1;
+    height: 100%;
+  }
+}
+
+.univer-theme {
+  .univer-editor-container {
+    div {
+      background: transparent;
+    }
+  }
+}
+
+.theme-light {
+  .univer-theme {
+    @include theme-light-table();
+  }
+}
+
+.theme-dark {
+  .univer-theme {
+    @include theme-dark-table();
+
+    .univer-editor-container {
+      filter: invert(1);
+      mix-blend-mode: screen;
+    }
+
+    .univer-formula-bar {
+      .univer-render-canvas {
+        filter: invert(1);
+        mix-blend-mode: screen;
+      }
+    }
+  }
+}

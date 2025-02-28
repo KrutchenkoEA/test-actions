@@ -1,0 +1,24 @@
+.tab-container {
+  box-sizing: border-box;
+
+  &__buttons {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 2px;
+    padding: 2px 0;
+    font-size: 14px;
+
+    .refresh-button {
+      width: 32%;
+    }
+  }
+
+  .file-input {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    width: 0;
+    opacity: 0;
+    outline: none;
+  }
+}

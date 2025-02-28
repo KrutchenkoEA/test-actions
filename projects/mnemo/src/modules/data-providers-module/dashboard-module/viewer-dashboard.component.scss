@@ -1,0 +1,112 @@
+@import 'projects/shared/mnemo/mixins/shared-mixin';
+
+::ng-deep {
+  table.mxPopupMenu {
+    position: absolute;
+    margin: 0;
+    border-radius: 4px;
+    border-collapse: collapse;
+    border: 1px solid $border;
+    background: var(--color-color-1);
+    box-shadow: 0 4px 9px rgb(93 117 147 / 11%);
+    font-size: 12px;
+    line-height: 15px;
+    color: $font-color;
+    cursor: pointer;
+
+    tr.mxPopupMenuItemHover {
+      background-color: var(--color-color-1);
+      color: $color-logo;
+      cursor: pointer;
+    }
+
+    td.mxPopupMenuItem {
+      padding: 8px;
+    }
+  }
+}
+
+.grid {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+
+  .item {
+    background-color: var(--color-background-popup-widgets);
+    width: calc(100% - 2px);
+    height: calc(100% - 2px);
+    border: 1px solid transparent;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    cursor: context-menu;
+
+    &__header {
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      font-size: 12px;
+      color: var(--color-text-main-text);
+      box-sizing: border-box;
+      cursor: move;
+    }
+
+    &__body {
+      height: calc(100% - 30px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .indicator-container {
+      display: flex;
+      flex-direction: row;
+      gap: 4px;
+      color: var(--color-text-signatures-and-future);
+
+      .indicator {
+        cursor: help;
+
+        &_clickable {
+          color: var(--color-text-contrast);
+          cursor: pointer;
+
+          &:hover {
+            svg {
+              color: var(--color-logo);
+            }
+          }
+        }
+
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+    }
+
+    &:hover {
+      border: 1px solid var(--color-logo);
+    }
+  }
+}
+
+.skeleton-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 4px;
+  height: 80%;
+  padding: 80px 20px 0;
+}
+
+.loading-shade {
+  @include loading-shade();
+
+  bottom: 0;
+  top: unset;
+  height: 100%;
+}
