@@ -12,7 +12,6 @@ import { SomeComponentComponent } from '@actions/core';
       test-second-lib works!
     </p>
     <core-lib-some-component></core-lib-some-component>
-
   `,
   styles: ``
 })
