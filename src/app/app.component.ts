@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CalculationsFormulaParseService, IParseArrResult } from './calculations-formula-parse.service';
+import { SomeComponentComponent, TestCoreLibComponent } from '@actions/core';
+import { TestSecondLibComponent } from '@actions/second';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, TestCoreLibComponent, TestSecondLibComponent, SomeComponentComponent],
   templateUrl: './app.component.html',
   standalone: true,
   styleUrl: './app.component.css',

@@ -21,7 +21,21 @@
     "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
-    "module": "ES2022"
+    "module": "ES2022",
+    "paths": {
+      "@actions/core": [
+        "./dist/test-core-lib"
+      ],
+      "@actions/core/*": [
+        "./dist/test-core-lib/*"
+      ],
+      "@actions/second": [
+        "./dist/test-second-lib"
+      ],
+      "@actions/second/*": [
+        "./dist/test-second-lib/*"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
