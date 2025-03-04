@@ -1,7 +1,0 @@
-@import '../../../mixins/popup-mixin';
-
-@include popup(370px, 420px);
-
-textarea {
-  height: 60px;
-}

@@ -93,38 +93,5 @@
         }
       }
     },
-    "tl-platform-mnemo": {
-      "projectType": "library",
-      "root": "projects/mnemo",
-      "sourceRoot": "projects/mnemo/src",
-      "prefix": "tl-mnemo",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "project": "projects/mnemo/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/mnemo/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/mnemo/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "tsConfig": "projects/mnemo/tsconfig.spec.json",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ]
-          }
-        }
-      }
-    }
   }
 }
