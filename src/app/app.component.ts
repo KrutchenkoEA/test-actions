@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { CalculationsFormulaParseService, IParseArrResult } from './calculations-formula-parse.service';
 import { SomeComponentComponent, TestCoreLibComponent } from '@actions/core';
 import { TestSecondLibComponent } from '@actions/second';
 
@@ -9,20 +8,13 @@ import { TestSecondLibComponent } from '@actions/second';
   imports: [RouterOutlet, TestCoreLibComponent, TestSecondLibComponent, SomeComponentComponent],
   templateUrl: './app.component.html',
   standalone: true,
-  styleUrl: './app.component.css',
+  styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-  title = 'clear-angular';
-  public data: IParseArrResult | null = null;
-  public dataArr: IParseArrResult[] = [];
-  public dataaaa = '';
-
-  constructor(private parseServe: CalculationsFormulaParseService) {
+  constructor() {
   }
 
   public ngOnInit(): void {
-    this.data = this.parseServe.parseData();
 
-    // this.dataArr = this.parseServe.parseDataArr();
   }
 }
